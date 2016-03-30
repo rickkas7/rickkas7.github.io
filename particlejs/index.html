@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<title>Particle API Test Page</title>
+
+<!-- https://jquery.com 
+You may prefer to load this from the CDN instead of directly from the server as done here -->
+<script type="text/javascript" src="jquery.js"></script>
+
+<!-- https://github.com/js-cookie/js-cookie -->
+<script type="text/javascript" src="js.cookie.js"></script>
+
+<!-- https://docs.particle.io/reference/javascript/ 
+You may prefer to load this from the CDN instead of directly from the server as done here -->  
+<script type="text/javascript" src="//cdn.jsdelivr.net/particle-api-js/5/particle.min.js"></script>
+<!-- <script type="text/javascript" src="particle.min.js"></script> -->
+
+
+
+<!-- Our Javascript code for this page -->  
+<script type="text/javascript" src="testapi.js"></script>
+
+<!-- css -->  
+<link rel="stylesheet" type="text/css" href="testapi.css" />
+</head>
+<body>
+
+<!-- displayed on login failures -->
+<div id="loginFailureDiv" class="alertBox hidden">
+<p>Invalid email address or password, please try again.</p>
+</div> <!-- loginFailureDiv -->
+
+<!-- displayed when an API call fails, usually because of an expired access token -->
+<div id="apiFailureDiv" class="alertBox hidden">
+<p>An error occurred accessing the API. Try logging in again.</p>
+</div> <!-- apiFailureDiv -->
+
+<!-- displayed to show the login screen -->
+<div id="loginDiv" class="hidden">
+<form>
+<p>Log in with the email address and password you use for your Particle login:</p>
+<table>
+<tr><td>Email Address</td><td><input type="text" id="loginUser"/></td></tr>
+<tr><td>Password</td><td><input type="password" id="loginPass" /></td></tr>
+</table>
+<input type="submit" id="loginButton">
+</form>
+</div> <!-- loginDiv -->
+
+<!-- displayed to show main user interface after logging in -->
+<div id="mainDiv" class="hidden">
+
+<!-- popup menu to select a device to control -->
+<form>
+<p>Device: 
+<select id="deviceSelect">
+<option value="" selected="selected">Select Device</option>
+</select></p>
+</form>
+<p>&nbsp;</p>
+
+<!-- displayed while we're waiting for a response from the device -->
+<div id="queryingDiv" class="hidden">
+<p>Attempting to contact the device&hellip;</p>
+</div> <!-- queryingDiv -->
+
+<!-- displayed when the device doesn't support the led api -->
+<div id="wrongApiDiv" class="alertBox hidden">
+<p>The device you have selected does not appear to have the test code flashed to it.</p>
+</div> <!-- wrongApiDiv -->
+
+<!-- displayed when the device did not respond -->
+<div id="deviceNotAvailableDiv" class="alertBox hidden">
+<p>The device you have selected did not respond to requests.</p>
+</div> <!-- deviceNotAvailableDiv -->
+
+<!-- normal display with the button to toggle the LED and show its state -->
+<div id="appDiv" class="hidden">
+<form>
+<p><input type="button" id="toggleButton" value="Toggle LED"/></p>
+<div id="ledOnDiv" class="hidden ledOn">LED ON!</div>
+<div id="ledOffDiv" class="hidden ledOff">led off</div>
+</form>
+</div>
+
+<p>&nbsp;</p>
+<form>
+<p><input type="button" id="logoutButton" value="Log Out"/></p>
+</form>
+
+</div> <!-- mainDiv -->
+
+
+</body>
+</html>
