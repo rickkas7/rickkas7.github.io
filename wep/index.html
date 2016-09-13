@@ -34,20 +34,20 @@ here's what you need to do. </p>
 <h3>64-bit hex keys</h3>
 
 <p>One common configuration is 64-bit hexadecimal keys. You can tell you have one of these because the 
-key is 10 letters long and consists only of the characters 0123456789 ABCDEF 
+key is 10 letters and numbers long and consists only of the characters 0123456789 ABCDEF 
 (the letters could be lowercase abcdef, but usually are not). It's what's pictured in the screenshot above. 
 This is sometimes referred to as 40-bit, as well.</p> 
 
 <p>There are always 4 keys, any you can use any one of them, but you need to know which one you are using!</p>
 
-<p>Say you want to use Key 1. You would enter 0005D9178B0F95 as your WEP password. I know, it doesn't make any
+<p>Say you want to use Key 1. You would enter <span class="key">0005D9178B0F95</span> as your WEP password. I know, it doesn't make any
 sense, but that's what you need to do. That's 00 because it's Key 1 and 05 because it's 5 bytes expressed as 10 hexadecimal
-digits, plus the key D9178B0F95. I told you it was a pain!</p>
+digits, plus the key <span class="key">D9178B0F95</span>. I told you it was a pain!</p>
 
 <img src="02.jpg" width="283" height="512" alt="iPhone setup screen" />
 
-<p>The keys are not case-sensitive, so you could enter 0005d9178b0f95 and it would still work, 
-but you absolutely need the 0005 before the key!</p>
+<p>The keys are not case-sensitive, so you could enter <span class="key">0005d9178b0f95</span> and it would still work, 
+but you absolutely need the <span class="key">0005</span> before the key!</p>
 
 <p>Remember these keys are hexadecimal, so it will always be a zero and not a capital O, for example. That does matter.</p>
 
@@ -62,23 +62,23 @@ $ particle serial wifi
 Done! Your device should now restart.
 </pre>
 
-<p>If you were using Key 2, you'd enter: 0105C1375A117D.</p>
+<p>If you were using Key 2, you'd enter: <span class="key">0105C1375A117D</span>.</p>
 
-<p>If you were using Key 3, you'd enter: 0205B600EEB5DD.</p>
+<p>If you were using Key 3, you'd enter: <span class="key">0205B600EEB5DD</span>.</p>
 
-<p>If you were using Key 4, you'd enter: 03055AB5219677.</p>
+<p>If you were using Key 4, you'd enter: <span class="key">03055AB5219677</span>.</p>
 
 <p>Of course you'd use your own keys, not the ones here. And this was on a test router. It's no longer using those keys.</p>
 
 <h3>128-bit hex keys</h3>
 
 <p>Another common configuration is 128-bit hexadecimal keys. You can tell you have one of these because the 
-key is 26 letters long and consists only of the characters 0123456789 ABCDEF 
+key is 26 letters and numbers long and consists only of the characters 0123456789 ABCDEF 
 (the letters could be lowercase abcdef, but usually are not). This is sometimes referred to as 104-bit.</p>
 
 <img src="03.png" width="828" height="537" alt="Linksys 128-bit configuration" />
 
-<p>If this was your configuration and you were using Key 1, you'd enter 000DB4BD6ED43E8F1251E6A46BC679. 
+<p>If this was your configuration and you were using Key 1, you'd enter <span class="key">000DB4BD6ED43E8F1251E6A46BC679</span>. 
 That's 00 because it's Key 1 and 0D because the key is 13 = 0x0D (hexadecimal) bytes long, plus the key. 
 You probably don't want to be entering that on your phone!</p>
 
@@ -100,7 +100,7 @@ from a security standpoint.</p>
 <input type="text" id="keyValue64" size="5"/>
 <span id="keyEnter64" class="hidden">Enter:</span> 
 <span id="keyShort64" class="hidden"><em>Not enough characters yet</em></span> 
-<span id="keyResult64"></span>
+<span id="keyResult64" class="key"></span>
 </p>
 </form>
 
@@ -124,7 +124,7 @@ allow you to enter keys in ASCII instead of hex, though the Linksys does not.</p
 <input type="text" id="keyValue128" size="13"/>
 <span id="keyEnter128" class="hidden">Enter:</span> 
 <span id="keyShort128" class="hidden"><em>Not enough characters yet</em></span> 
-<span id="keyResult128"></span>
+<span id="keyResult128" class="key"></span>
 </p>
 </form>
 
@@ -133,11 +133,12 @@ hexadecimal, it's 13-characters long, plus the popup is set to ASCII, so it's 12
 
 <img src="04.jpg" width="550" height="197" alt="D-Link 128-bit ASCII configuration" />
 
+<p>If your router was configured like that, you'd enter <span class="key">000D31323334353637383938373635</span> as your password.</p>
 
 <h3>Passphrase</h3>
 
 <p>This is not the router password, but the WEP generator passphrase. In the screen above from the Linksys router, it's
-the string "thisisatest". It's used only to generate the keys. You can just enter the keys as they appear above.</p>
+the string <span class="key">thisisatest</span>. It's used only to generate the keys. You can just enter the keys as they appear above.</p>
 
 <p>This was a bad idea from the start, and it likely will not work with all vendors. But just 
 in case you only have the passphrase and not the individual keys, you can calculate them here;
@@ -150,12 +151,12 @@ the Linksys screenshots above.</p>
 not transmitted over the Internet. Though you are using a WEP network, so it's inherently insecure anyway.</p>
 
 <p>For 64-bit keys:<br/>
-Key 1: <span id="passphase64_0"></span><br/>
-Key 2: <span id="passphase64_1"></span><br/>
-Key 3: <span id="passphase64_2"></span><br/>
-Key 4: <span id="passphase64_3"></span></p>
+Key 1: <span id="passphase64_0" class="key"></span><br/>
+Key 2: <span id="passphase64_1" class="key"></span><br/>
+Key 3: <span id="passphase64_2" class="key"></span><br/>
+Key 4: <span id="passphase64_3" class="key"></span></p>
 
-<p>For 128-bit keys: <span id="passphase128"></span></p>
+<p>For 128-bit keys: <span id="passphase128" class="key"></span></p>
 
 <p>There are three more 128-bit keys, but I can't figure out how to generate them. You only need one, anyway.</p>
 

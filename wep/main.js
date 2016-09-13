@@ -98,7 +98,7 @@ function updatePassphrase() {
 	            	s = '0' + s;
 	            }
 	           
-				pass64[ii] += s;
+				pass64[ii] += s.toUpperCase();
 			}
 		}
 		

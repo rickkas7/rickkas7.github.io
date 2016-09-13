@@ -18,10 +18,8 @@ p
 max-width:1000px;
 }
 
-
-/* pin information */
-.pinNotIO
-{
+.key {
+    font-family: "Lucida Console", Monaco, "Courier New", Courier, monospace;
 }
 
 .hidden
