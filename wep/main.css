@@ -1,0 +1,30 @@
+@CHARSET "UTF-8";
+
+body
+{
+background-color:#ffffff;
+max-width:1000px;
+}
+
+p,li,td,div
+{ 
+font-family: helvetica, sans-serif;
+color:#000000;
+font-size: small; 
+}
+
+p
+{
+max-width:1000px;
+}
+
+
+/* pin information */
+.pinNotIO
+{
+}
+
+.hidden
+{
+display:none;
+}

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<title>Particle Photon WEP Configuration Tips</title>
+
+<script type="text/javascript" src="jquery.js"></script>  
+<script type="text/javascript" src="main.js"></script>  
+<script type="text/javascript" src="md5.js"></script> <!-- https://github.com/blueimp/JavaScript-MD5 -->
+
+<link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+
+<div id="mainDiv">
+
+<h1>Particle Photon WEP Configuration Tips</h1>
+
+<p>First of all, <b>you should not use WEP</b> Wi-Fi encryption!</p> 
+
+<p>It's so easily broken into you might as well have an open Wi-Fi network. Also, it's really a pain to configure on the 
+device so you should use WPA2-Personal, instead.</p>
+
+<p>But if for some reason you need to use <a href="https://en.wikipedia.org/wiki/Wired_Equivalent_Privacy">WEP</a>, 
+here's what you need to do. </p>
+
+
+<p>Here's a fairly standard configuration screen from a Linksys router:</p>
+
+<img src="01.png" width="838" height="547" alt="Linksys configuration screen" />
+
+<h3>64-bit hex keys</h3>
+
+<p>One common configuration is 64-bit hexadecimal keys. You can tell you have one of these because the 
+key is 10 letters long and consists only of the characters 0123456789 ABCDEF 
+(the letters could be lowercase abcdef, but usually are not). It's what's pictured in the screenshot above. 
+This is sometimes referred to as 40-bit, as well.</p> 
+
+<p>There are always 4 keys, any you can use any one of them, but you need to know which one you are using!</p>
+
+<p>Say you want to use Key 1. You would enter 0005D9178B0F95 as your WEP password. I know, it doesn't make any
+sense, but that's what you need to do. That's 00 because it's Key 1 and 05 because it's 5 bytes expressed as 10 hexadecimal
+digits, plus the key D9178B0F95. I told you it was a pain!</p>
+
+<img src="02.jpg" width="283" height="512" alt="iPhone setup screen" />
+
+<p>The keys are not case-sensitive, so you could enter 0005d9178b0f95 and it would still work, 
+but you absolutely need the 0005 before the key!</p>
+
+<p>Remember these keys are hexadecimal, so it will always be a zero and not a capital O, for example. That does matter.</p>
+
+<p>If you are using the Particle CLI, it would look like this:</p>
+<pre>
+$ particle serial wifi
+? Should I scan for nearby Wi-Fi networks? Yes
+? Select the Wi-Fi network with which you wish to connect your device: linksys
+? Should I try to auto-detect the wireless security type? Yes
+> Detected WEP security
+? Wi-Fi Password 0005D9178B0F95
+Done! Your device should now restart.
+</pre>
+
+<p>If you were using Key 2, you'd enter: 0105C1375A117D.</p>
+
+<p>If you were using Key 3, you'd enter: 0205B600EEB5DD.</p>
+
+<p>If you were using Key 4, you'd enter: 03055AB5219677.</p>
+
+<p>Of course you'd use your own keys, not the ones here. And this was on a test router. It's no longer using those keys.</p>
+
+<h3>128-bit hex keys</h3>
+
+<p>Another common configuration is 128-bit hexadecimal keys. You can tell you have one of these because the 
+key is 26 letters long and consists only of the characters 0123456789 ABCDEF 
+(the letters could be lowercase abcdef, but usually are not). This is sometimes referred to as 104-bit.</p>
+
+<img src="03.png" width="828" height="537" alt="Linksys 128-bit configuration" />
+
+<p>If this was your configuration and you were using Key 1, you'd enter 000DB4BD6ED43E8F1251E6A46BC679. 
+That's 00 because it's Key 1 and 0D because the key is 13 = 0x0D (hexadecimal) bytes long, plus the key. 
+You probably don't want to be entering that on your phone!</p>
+
+<h3>64-bit ASCII keys</h3>
+
+<p>An ASCII 64-bit key is 5 characters long and consists of normal letters, numbers and symbols. Some routers
+allow you to enter keys in ASCII instead of hex, though the Linksys does not. Allowing this was a horrible idea
+from a security standpoint.</p>
+
+<p>Enter 5 characters (letters, numbers and symbols) in the text field below, case-sensitive, to get the equivalent hex key:</p>
+<form>
+<p>
+<select id="keyNum64">
+<option value="0">Key 1</option>
+<option value="1">Key 2</option>
+<option value="2">Key 3</option>
+<option value="3">Key 4</option>
+</select>
+<input type="text" id="keyValue64" size="5"/>
+<span id="keyEnter64" class="hidden">Enter:</span> 
+<span id="keyShort64" class="hidden"><em>Not enough characters yet</em></span> 
+<span id="keyResult64"></span>
+</p>
+</form>
+
+<p>All of the calculations are done in Javascript in your web browser; your key is not transmitted over the Internet.</p>
+
+
+<h3>128-bit ASCII keys</h3>
+
+<p>An ASCII 128-bit key is 13 characters long and consists of normal letters, numbers and symbols. Some routers
+allow you to enter keys in ASCII instead of hex, though the Linksys does not.</p>
+
+<p>Enter 13 characters (letters, numbers and symbols) in the text field below, case-sensitive, to get the equivalent hex key:</p>
+<form>
+<p>
+<select id="keyNum128">
+<option value="0">Key 1</option>
+<option value="1">Key 2</option>
+<option value="2">Key 3</option>
+<option value="3">Key 4</option>
+</select>
+<input type="text" id="keyValue128" size="13"/>
+<span id="keyEnter128" class="hidden">Enter:</span> 
+<span id="keyShort128" class="hidden"><em>Not enough characters yet</em></span> 
+<span id="keyResult128"></span>
+</p>
+</form>
+
+<p>Here's an example of a D-Link router configured with a 128-bit ASCII key 1234567898765. Even though it happens also be
+hexadecimal, it's 13-characters long, plus the popup is set to ASCII, so it's 128-bit (also known as 104-bit) ASCII.</p>
+
+<img src="04.jpg" width="550" height="197" alt="D-Link 128-bit ASCII configuration" />
+
+
+<h3>Passphrase</h3>
+
+<p>This is not the router password, but the WEP generator passphrase. In the screen above from the Linksys router, it's
+the string "thisisatest". It's used only to generate the keys. You can just enter the keys as they appear above.</p>
+
+<p>This was a bad idea from the start, and it likely will not work with all vendors. But just 
+in case you only have the passphrase and not the individual keys, you can calculate them here;
+this may or may not work with your router. If you enter thisisatest in the box, you should get the same set of keys in 
+the Linksys screenshots above.</p>
+
+<p><input type="text" id="passphraseText" size="20"/></p>
+
+<p>As is the case above, all of the calculations are done in Javascript in your web browser; your passphrase is
+not transmitted over the Internet. Though you are using a WEP network, so it's inherently insecure anyway.</p>
+
+<p>For 64-bit keys:<br/>
+Key 1: <span id="passphase64_0"></span><br/>
+Key 2: <span id="passphase64_1"></span><br/>
+Key 3: <span id="passphase64_2"></span><br/>
+Key 4: <span id="passphase64_3"></span></p>
+
+<p>For 128-bit keys: <span id="passphase128"></span></p>
+
+<p>There are three more 128-bit keys, but I can't figure out how to generate them. You only need one, anyway.</p>
+
+</div> <!-- mainDiv -->
+
+</body>
+</html>
