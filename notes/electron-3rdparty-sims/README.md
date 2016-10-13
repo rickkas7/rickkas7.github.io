@@ -48,7 +48,7 @@ You can follow the instructions on the page to complete setup. There are some ad
 
 The APN ("Access Point Name") specifies how the Electron should connect to the Internet. The setting varies by carrier, and sometimes by country. If you're searching Google for your APN, be aware that some carriers may list separate WAP APN or MMS APNs; you want to use the Generic or Internet APN.
 
-There is no set structure to an APN. Here some examples: broadband, internet, three.co.uk.
+There is no set structure to an APN. Here are some examples: broadband, internet, three.co.uk.
 
 If you have set your APN correctly the Electron should proceed through the normal states: breathing white, blinking green, blinking cyan, fast blinking cyan, and finally to breathing cyan, even before you've claimed the Electron. In fact, the Electron must be in breathing cyan to complete the claiming process.
 
@@ -320,7 +320,7 @@ You can be fooled into believing otherwise, because the APN is actually stored i
 
 ## Claiming an Electron manually
 
-In addition to using the setup.particle.io method above, once your Electron is breathing cyan after successfully setting the APN.
+In addition to using the setup.particle.io method above, once your Electron is breathing cyan after successfully setting the APN, you can claim an Electron with a 3rd-party SIM or an activated Particle SIM manually.
 
 You'll need the device ID of your Electron. You can get it by putting the Electron in [listening mode] (https://docs.particle.io/guide/getting-started/modes/electron/#listening-mode), blinking dark blue, by holding down the MODE button until the main status LED blinks blue, then issuing the CLI command:
 
