@@ -81,7 +81,8 @@ void setup()
 {
 	// Set the keep-alive value for 3rd party SIM card here
 	// https://docs.particle.io/reference/firmware/electron/#particle-keepalive-
-	Particle.keepAlive(120);
+	// Uncomment this when building for 0.5.0 or later
+	// Particle.keepAlive(120);
 
 	//Setup the Tinker application here
 
