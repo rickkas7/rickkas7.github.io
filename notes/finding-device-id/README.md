@@ -153,6 +153,21 @@ Select **Serial Monitor** from the **Tools** menu.
 
 Type the letter i (lowercase i, as in identify) in the box at the top of the window and click **Send**.
 
+### Serial - Android Phone
+
+If your Android Phone supports USB OTG ("on the go") and you have an OTG adapter cable, you may be able to get your device ID that way. One caveat is that your phone probably won't power up Photon, so this will probably only work if you have an external power source, like an Electron with a battery.
+
+![OTG connection](android_serial2.png)
+
+Install the Android USB Serial Monitor Lite application from the Google Play store. 
+
+Connect the device to your phone using a USB cable and a USB OTG adapter and put the device in [listening mode] (https://docs.particle.io/guide/getting-started/modes/electron/#listening-mode) (blinking dark blue) by holding down the SETUP (or MODE) button until the main status LED blinks dark blue, about 3 seconds.
+
+Open the serial monitor app and it should ask if you want to connect to the device. Say yes and you should see a screen like this:
+
+![Android Serial Monitor](android_serial1.png)
+
+Enter "i" (lowercase i, as in identify) in the box at the top of the box at the top of the screen and click the **Write** button. The device ID (and other information, for an Electron) should be displayed.
 
 ## JTAG/SWD
 
@@ -190,7 +205,6 @@ Note that because of byte order, each 32-bit value has the individual bytes swap
 ```
             1e003212 34473431 49111039
 ```
-
 
 
 ## After claiming
