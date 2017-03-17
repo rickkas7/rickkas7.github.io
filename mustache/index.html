@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<title>Mustache Tester</title>
+
+<script type="text/javascript" src="jquery.js"></script>  
+<script type="text/javascript" src="main.js"></script>  
+
+<!-- http://handlebarsjs.com/ -->  
+<script type="text/javascript" src="handlebars.min.js"></script>  
+
+<!-- https://github.com/zaach/jsonlint -->
+<script type="text/javascript" src="formatter.js"></script>  
+<script type="text/javascript" src="jsonlint.js"></script>  
+
+<link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+
+<div id="mainDiv">
+
+<h1>Mustache Tester</h1>
+
+<p>Enter JSON data to parse:</p>
+
+<p><textarea id="jsonText" rows="10" cols="100"></textarea></p>
+
+<p><input type="checkbox" id="showJsonDataCheckbox" />Show formatted JSON data</p>
+
+<div id="jsonDataFormattedDiv" class="hidden">
+<p>JSON data, formatted:</p>
+<p><textarea id="jsonDataFormattedText" rows="10" cols="100" readonly></textarea></p>
+</div>
+
+
+<p>Enter a mustache template to test:</p>
+
+<p><textarea id="templateText" rows="10" cols="100"></textarea></p>
+
+<p id="parseError" class="hidden">JSON data was not valid.</p>
+
+<p>Processed template and data:</p>
+
+<p><textarea id="resultText" rows="10" cols="100" readonly></textarea></p>
+
+<div id="resultJsonFormattedDiv" class="hidden">
+<p>Processed template and data, as formatted JSON:</p>
+<p><textarea id="resultJsonFormattedText" rows="10" cols="100" readonly></textarea></p>
+</div>
+
+<p>String-escaped version of the template:</p>
+
+<p><textarea id="escapedTemplateText" rows="10" cols="100" readonly></textarea></p>
+
+<p><input type="checkbox" id="removeLFCheckbox" checked="checked" />Remove CR, LF and tab from string-escaped version</p>
+
+
+</div> <!-- mainDiv -->
+
+</body>
+</html>
