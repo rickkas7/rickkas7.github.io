@@ -5,9 +5,36 @@ $(document).ready(function() {
 	$('#templateText').on('keyup blur', handleInputChange);
 	$('#showJsonDataCheckbox').on('click', handleShowJsonDataCheckbox);
 	$('#removeLFCheckbox').on('click', handleTestButton);
+	$('#exampleSelect').on('change', handleExampleSelect);
+	
+	// Initialize examples menu
+	console.log("examples.length=" + examples.length);
+	for(var ii = 0; ii < examples.length; ii++) {
+		$('#exampleSelect').append('<option value="' + ii + '">' + examples[ii].title + '</option>');
+	}
 	
 	$('#parseError').hide();
 });
+
+function handleExampleSelect() {
+	var sel = $('#exampleSelect').val();
+	if (sel != '-') {
+		var item = parseInt(sel);
+		
+		if (examples[item].data instanceof Object) {
+			$('#jsonText').val(JSON.stringify(examples[item].data));
+		}
+		else {
+			$('#jsonText').val(examples[item].data);			
+		}
+		$('#templateText').val(examples[item].template);
+		handleInputChange();
+	}
+	else {
+		$('#jsonText').val('');
+		$('#templateText').val('');
+	}
+}
 
 function handleInputChange() {
 	handleShowJsonDataCheckbox();
@@ -86,3 +113,4 @@ function handleShowJsonDataCheckbox() {
 		$('#jsonDataFormattedDiv').hide();
 	}
 }
+

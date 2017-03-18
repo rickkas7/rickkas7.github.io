@@ -8,6 +8,8 @@
 
 <script type="text/javascript" src="jquery.js"></script>  
 <script type="text/javascript" src="main.js"></script>  
+<script type="text/javascript" src="examples.js"></script> 
+  
 
 <!-- http://handlebarsjs.com/ -->  
 <script type="text/javascript" src="handlebars.min.js"></script>  
@@ -23,6 +25,13 @@
 <div id="mainDiv">
 
 <h1>Mustache Tester</h1>
+
+<form>
+<p>Show me an example: 
+<select id="exampleSelect">
+<option value="-">-</option>
+</select>
+</p>
 
 <p>Enter JSON data to parse:</p>
 
@@ -57,6 +66,7 @@
 
 <p><input type="checkbox" id="removeLFCheckbox" checked="checked" />Remove CR, LF and tab from string-escaped version</p>
 
+</form>
 
 </div> <!-- mainDiv -->
 
