@@ -8,7 +8,6 @@ $(document).ready(function() {
 	$('#exampleSelect').on('change', handleExampleSelect);
 	
 	// Initialize examples menu
-	console.log("examples.length=" + examples.length);
 	for(var ii = 0; ii < examples.length; ii++) {
 		$('#exampleSelect').append('<option value="' + ii + '">' + examples[ii].title + '</option>');
 	}
