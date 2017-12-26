@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>JSON Parser</title>
+<script type="text/javascript" src="jquery.js"></script>  
+<!-- <script type="text/javascript" src="htmlbuilder.js"></script>  -->  
+<script type="text/javascript" src="main.js"></script>  
+<link rel="stylesheet" type="text/css" href="main.css" />
+
+
+</head>
+<body>
+
+
+<form>
+
+<p>This page provides a convenient way to figure out what accessor to use to get data out of a large
+block of JSON text, typically returned by some API.</p>
+<p>The accessor code is used with
+<a href="https://github.com/rickkas7/JsonParserGeneratorRK">JsonParserGeneratorRK</a>
+for the Particle Photon and Electron.</p>
+
+<h3>Paste JSON to decode here:</h3>
+<textarea id="jsonTextArea" rows="10" cols="100">
+</textarea>
+
+<div>Or show me a JSON example:
+<select id="exampleSelect">
+<option value="none" selected="selected">Select an example</option>
+<option value="simple">Simple example</option>
+<option value="medium">Medium example</option>
+<option value="large">Large weather example</option>
+</select>
+</div>
+
+<h3>Decoded JSON:</h3>
+
+<p>Click on a row to view the accessor code to use below.</p>
+
+<div id="decodedDiv" style="height:400px;overflow:scroll">
+</div>
+
+
+<h3>Accessor code:</h3>
+
+<div id="codeDiv" class="code"></div>
+
+<div id="invalidDiv" class="hidden">JSON can't be decoded.</div>
+
+</form>
+
+</body>
+</html>
+
