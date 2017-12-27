@@ -26,3 +26,13 @@ max-width:1000px;
 {
 display:none;
 }
+
+div.highlight
+{
+background-color:#fff344;
+}
+
+div.code
+{
+font-family: monospace
+}

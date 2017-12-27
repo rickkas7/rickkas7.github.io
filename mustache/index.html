@@ -40,8 +40,15 @@
 <p><input type="checkbox" id="showJsonDataCheckbox" />Show formatted JSON data</p>
 
 <div id="jsonDataFormattedDiv" class="hidden">
-<p>JSON data, formatted:</p>
-<p><textarea id="jsonDataFormattedText" rows="10" cols="100" readonly></textarea></p>
+<p>JSON data, formatted. Click on a row to generate the accessor to use:</p>
+<div id="decodedDiv" style="height:150px;overflow:scroll">
+</div>
+
+<p>Mustache accessor to use:</p>
+<div id="codeDiv" class="code"></div>
+
+<p><input type="button" id="copyToTemplateButton" value="Copy To Template" /></p>
+
 </div>
 
 
