@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<!-- simple types -->
+<xs:element name="pinNumber" type="xs:int"/>
+<xs:element name="pinName" type="xs:string"/>
+<xs:element name="pinAltName" type="xs:string"/>
+<xs:element name="pinDescription" type="xs:string"/>
+<xs:element name="pinIsIO" type="xs:boolean"/>
+<xs:element name="pin5VTolerant" type="xs:string"/>
+<xs:element name="pinDigitalRead" type="xs:string"/>
+<xs:element name="pinDigitalWrite" type="xs:string"/>
+<xs:element name="pinAnalogRead" type="xs:string"/>
+<xs:element name="pinAnalogWriteDAC" type="xs:string"/>
+<xs:element name="pinAnalogWritePWM" type="xs:string"/>
+<xs:element name="pinTone" type="xs:string"/>
+<xs:element name="pinAttachInterrupt" type="xs:string"/>
+<xs:element name="pinSerial" type="xs:string"/>
+<xs:element name="pinSPI" type="xs:string"/>
+<xs:element name="pinI2C" type="xs:string"/>
+<xs:element name="pinI2S" type="xs:string"/>
+<xs:element name="pinCAN" type="xs:string"/>
+
+<xs:element name="detailLabel" type="xs:string"/>
+<xs:element name="detailTag" type="xs:string"/>
+<xs:element name="detailSearchable" type="xs:boolean"/>
+<xs:element name="detailTrue" type="xs:string"/>
+<xs:element name="detailFalse" type="xs:string"/>
+<xs:element name="detailEmpty" type="xs:string"/>
+
+<!-- attributes -->
+
+<!-- complex types -->
+
+<xs:element name="pinData">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="pin" minOccurs="0" maxOccurs="9999"/>
+			<xs:element ref="detail" minOccurs="0" maxOccurs="9999"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+
+<xs:element name="pin">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="pinNumber" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pinName" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="pinAltName" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pinDescription" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pinIsIO" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pin5VTolerant" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pinDigitalRead" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pinDigitalWrite" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pinAnalogRead" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pinAnalogWriteDAC" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pinAnalogWritePWM" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pinTone" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pinAttachInterrupt" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pinSerial" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pinSPI" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pinI2C" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pinI2S" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="pinCAN" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="detail">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="detailLabel" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="detailTag" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="detailSearchable" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="detailTrue" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="detailFalse" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="detailEmpty" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+
+</xs:schema>
+

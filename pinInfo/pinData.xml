@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<pinData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="pinData.xsd">
+	<pin>
+		<pinNumber>1</pinNumber>
+		<pinName>VIN</pinName>
+		<pinDescription>Power in 3.3V to 5.5 VDC. Or power out (when powered by USB), 4.5 VDC at 1A maximum.</pinDescription>
+		<pinIsIO>false</pinIsIO>
+		<pin5VTolerant>Yes.</pin5VTolerant>
+	</pin>
+	<pin>
+		<pinNumber>2</pinNumber>
+		<pinName>GND</pinName>
+		<pinDescription>Ground. There are two GND pins, only one needs to be connected.</pinDescription>
+		<pinIsIO>false</pinIsIO>
+	</pin>
+	<pin>
+		<pinNumber>3</pinNumber>
+		<pinName>TX</pinName>
+		<pinDescription>Serial1 TX (transmitted data), GPIO.</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>true</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>false</pinAnalogRead>
+		<pinAnalogWritePWM>true</pinAnalogWritePWM>
+		<pinTone>true</pinTone>
+		<pinAttachInterrupt>true</pinAttachInterrupt>
+		<pinSerial>TX. Use Serial1 object.</pinSerial>
+	</pin>
+	<pin>
+		<pinNumber>4</pinNumber>
+		<pinName>RX</pinName>
+		<pinDescription>Serial1 RX (received data), GPIO.</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>true</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>false</pinAnalogRead>
+		<pinAnalogWritePWM>true</pinAnalogWritePWM>
+		<pinTone>true</pinTone>
+		<pinAttachInterrupt>true</pinAttachInterrupt>
+		<pinSerial>RX. Use Serial1 object. Is 5V tolerant.</pinSerial>
+	</pin>
+	<pin>
+		<pinNumber>5</pinNumber>
+		<pinName>WKP</pinName>
+		<pinAltName>A7</pinAltName>
+		<pinDescription>WKP/A7 Wakeup (active high), analog in, GPIO</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>true</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>true</pinAnalogRead>
+		<pinAnalogWriteDAC>false</pinAnalogWriteDAC>
+		<pinAnalogWritePWM>true</pinAnalogWritePWM>
+		<pinTone>true</pinTone>
+		<pinAttachInterrupt>true</pinAttachInterrupt>
+	</pin>
+	<pin>
+		<pinNumber>6</pinNumber>
+		<pinName>DAC</pinName>
+		<pinAltName>A6</pinAltName>		
+		<pinDescription>DAC/A6 True analog out, analog in, GPIO</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>false</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>true</pinAnalogRead>
+		<pinAnalogWriteDAC>true</pinAnalogWriteDAC>
+		<pinAnalogWritePWM>false</pinAnalogWritePWM>
+		<pinTone>true</pinTone>
+		<pinAttachInterrupt>Yes. D3 and DAC/A6 share the same interrupt handler.</pinAttachInterrupt>
+	</pin>
+	<pin>
+		<pinNumber>7</pinNumber>
+		<pinName>A5</pinName>
+		<pinDescription>A5 Analog in, GPIO, SPI</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>true</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>true</pinAnalogRead>
+		<pinAnalogWriteDAC>false</pinAnalogWriteDAC>
+		<pinAnalogWritePWM>Yes. D2 and A5 share the same PWM channel and the PWM duty cycle is set for both.</pinAnalogWritePWM>
+		<pinTone>Yes. D2 and A5 share the same PWM channel and only one frequency can be set for both.</pinTone>
+		<pinAttachInterrupt>false</pinAttachInterrupt>
+		<pinSPI>MOSI. Use SPI object.</pinSPI>
+	</pin>
+	<pin>
+		<pinNumber>8</pinNumber>
+		<pinName>A4</pinName>
+		<pinDescription>A4 Analog in, GPIO, SPI</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>true</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>true</pinAnalogRead>
+		<pinAnalogWriteDAC>false</pinAnalogWriteDAC>
+		<pinAnalogWritePWM>Yes. D3 and A4 share the same PWM channel and the PWM duty cycle is set for both.</pinAnalogWritePWM>
+		<pinTone>Yes. D3 and A4 share the same PWM channel and only one frequency can be set for both.</pinTone>
+		<pinAttachInterrupt>Yes. D1 and A4 share the same interrupt handler.</pinAttachInterrupt>
+		<pinSPI>MISO. Use SPI object.</pinSPI>
+	</pin>
+	<pin>
+		<pinNumber>9</pinNumber>
+		<pinName>A3</pinName>
+		<pinDescription>A3 True analog out, analog in, GPIO, SPI</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>false</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>true</pinAnalogRead>
+		<pinAnalogWriteDAC>true</pinAnalogWriteDAC>
+		<pinAnalogWritePWM>false</pinAnalogWritePWM>
+		<pinTone>false</pinTone>
+		<pinAttachInterrupt>Yes. D2, A0, and A3 share the same interrupt handler.</pinAttachInterrupt>
+		<pinSPI>SCK. Use SPI object.</pinSPI>
+	</pin>
+	<pin>
+		<pinNumber>10</pinNumber>
+		<pinName>A2</pinName>
+		<pinDescription>A2 Analog in, GPIO</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>true</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>true</pinAnalogRead>
+		<pinAnalogWriteDAC>false</pinAnalogWriteDAC>
+		<pinAnalogWritePWM>false</pinAnalogWritePWM>
+		<pinTone>false</pinTone>
+		<pinAttachInterrupt>true</pinAttachInterrupt>
+		<pinSPI>SS. Use SPI object.</pinSPI>
+	</pin>
+	<pin>
+		<pinNumber>11</pinNumber>
+		<pinName>A1</pinName>
+		<pinDescription>A1 Analog in, GPIO</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>true</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>true</pinAnalogRead>
+		<pinAnalogWriteDAC>false</pinAnalogWriteDAC>
+		<pinAnalogWritePWM>false</pinAnalogWritePWM>
+		<pinTone>false</pinTone>
+		<pinAttachInterrupt>Yes. D4 and A1 share the same interrupt handler.</pinAttachInterrupt>
+	</pin>
+	<pin>
+		<pinNumber>12</pinNumber>
+		<pinName>A0</pinName>
+		<pinDescription>A0 Analog in, GPIO</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>true</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>true</pinAnalogRead>
+		<pinAnalogWriteDAC>false</pinAnalogWriteDAC>
+		<pinAnalogWritePWM>false</pinAnalogWritePWM>
+		<pinTone>false</pinTone>
+		<pinAttachInterrupt>Yes. D2, A0, and A3 share the same interrupt handler.</pinAttachInterrupt>
+	</pin>
+	<pin>
+		<pinNumber>13</pinNumber>
+		<pinName>D0</pinName>
+		<pinDescription>D0 GPIO, I2C, Serial2</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>true</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>false</pinAnalogRead>
+		<pinAnalogWritePWM>true</pinAnalogWritePWM>
+		<pinTone>true</pinTone>
+		<pinAttachInterrupt>false</pinAttachInterrupt>
+		<pinI2C>SDA. Use Wire object. Use 1.5K to 10K external pull-up resistor. Is 5V tolerant.</pinI2C>
+	</pin>
+	<pin>
+		<pinNumber>14</pinNumber>
+		<pinName>D1</pinName>
+		<pinDescription>D1 GPIO, I2C, Serial2</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>true</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>false</pinAnalogRead>
+		<pinAnalogWritePWM>true</pinAnalogWritePWM>
+		<pinTone>true</pinTone>
+		<pinAttachInterrupt>Yes. D1 and A4 share the same interrupt handler.</pinAttachInterrupt>
+		<pinI2C>SCL. Use Wire object. Use 1.5K to 10K external pull-up resistor. Is 5V tolerant.</pinI2C>
+		<pinCAN>TX</pinCAN>
+	</pin>
+	<pin>
+		<pinNumber>15</pinNumber>
+		<pinName>D2</pinName>
+		<pinDescription>D2 GPIO, SPI1</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>true</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>false</pinAnalogRead>
+		<pinAnalogWritePWM>Yes. D2 and A5 share the same PWM channel and the PWM duty cycle is set for both.</pinAnalogWritePWM>
+		<pinTone>Yes. D2 and A5 share the same PWM channel and only one frequency can be set for both.</pinTone>
+		<pinAttachInterrupt>Yes. D2, A0, and A3 share the same interrupt handler.</pinAttachInterrupt>
+		<pinSPI>MOSI. Use SPI1 object.</pinSPI>
+		<pinI2S>SD</pinI2S>
+		<pinCAN>RX</pinCAN>
+	</pin>
+	<pin>
+		<pinNumber>16</pinNumber>
+		<pinName>D3</pinName>
+		<pinDescription>D3 GPIO, SPI1</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>true</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>false</pinAnalogRead>
+		<pinAnalogWritePWM>Yes. D3 and A4 share the same PWM channel and the PWM duty cycle is set for both.</pinAnalogWritePWM>
+		<pinTone>Yes. D3 and A4 share the same PWM channel and only one frequency can be set for both.</pinTone>
+		<pinAttachInterrupt>Yes. D3 and DAC/A6 share the same interrupt handler.</pinAttachInterrupt>
+		<pinSPI>MISO. Use SPI1 object.</pinSPI>
+	</pin>
+	<pin>
+		<pinNumber>17</pinNumber>
+		<pinName>D4</pinName>
+		<pinDescription>D4 GPIO, SPI1</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>true</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>false</pinAnalogRead>
+		<pinAnalogWritePWM>false</pinAnalogWritePWM>
+		<pinTone>false</pinTone>
+		<pinAttachInterrupt>Yes. D4 and A1 share the same interrupt handler.</pinAttachInterrupt>
+		<pinSPI>SCK. Use SPI1 object.</pinSPI>
+		<pinI2S>SCK</pinI2S>
+	</pin>
+	<pin>
+		<pinNumber>18</pinNumber>
+		<pinName>D5</pinName>
+		<pinDescription>D5 GPIO, SPI1</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>true</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>false</pinAnalogRead>
+		<pinAnalogWritePWM>false</pinAnalogWritePWM>
+		<pinTone>false</pinTone>
+		<pinAttachInterrupt>true</pinAttachInterrupt>
+		<pinSPI>SS. Use SPI1 object.</pinSPI>
+		<pinI2S>WS</pinI2S>
+	</pin>
+	<pin>
+		<pinNumber>19</pinNumber>
+		<pinName>D6</pinName>
+		<pinDescription>D6 GPIO</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>true</pin5VTolerant>
+		<pinDigitalRead>true</pinDigitalRead>
+		<pinDigitalWrite>true</pinDigitalWrite>
+		<pinAnalogRead>false</pinAnalogRead>
+		<pinAnalogWritePWM>false</pinAnalogWritePWM>
+		<pinTone>false</pinTone>
+		<pinAttachInterrupt>true</pinAttachInterrupt>
+	</pin>
+	<pin>
+		<pinNumber>20</pinNumber>
+		<pinName>D7</pinName>
+		<pinDescription>D7 On-board Blue LED, GPIO</pinDescription>
+		<pinIsIO>true</pinIsIO>
+		<pin5VTolerant>false</pin5VTolerant>
+		<pinDigitalRead>Yes. But the on-board LED will light when 3.3V is supplied on this pin as well.</pinDigitalRead>
+		<pinDigitalWrite>Yes. Note that this controls the on-board blue LED!</pinDigitalWrite>
+		<pinAnalogRead>false</pinAnalogRead>
+		<pinAnalogWritePWM>false</pinAnalogWritePWM>
+		<pinTone>false</pinTone>
+		<pinAttachInterrupt>true</pinAttachInterrupt>
+	</pin>
+	<pin>
+		<pinNumber>21</pinNumber>
+		<pinName>GND</pinName>
+		<pinDescription>Ground. There are two GND pins, only one needs to be connected.</pinDescription>
+		<pinIsIO>false</pinIsIO>
+	</pin>
+	<pin>
+		<pinNumber>22</pinNumber>
+		<pinName>VBAT</pinName>
+		<pinDescription>Battery for internal real-time clock, backup registers, and SRAM. Supply 1.65VDC to 3.6 VDC at 19 μA.</pinDescription>
+		<pinIsIO>false</pinIsIO>
+		<pin5VTolerant>false</pin5VTolerant>
+	</pin>
+	<pin>
+		<pinNumber>23</pinNumber>
+		<pinName>RST</pinName>
+		<pinDescription>Hardware reset. Pull low to reset; can leave unconnected in normal operation.</pinDescription>
+		<pinIsIO>false</pinIsIO>
+	</pin>
+	<pin>
+		<pinNumber>24</pinNumber>
+		<pinName>3V3</pinName>
+		<pinDescription>Regulated 3.3V DC output, maximum load 100 mA.</pinDescription>
+		<pinIsIO>false</pinIsIO>
+	</pin>
+	
+	<detail>
+		<detailLabel>Description</detailLabel>
+		<detailTag>pinDescription</detailTag>
+		<detailSearchable>false</detailSearchable>
+	</detail>
+	<detail>
+		<detailLabel>Input is 5V Tolerant</detailLabel>
+		<detailTag>pin5VTolerant</detailTag>
+		<detailSearchable>true</detailSearchable>
+		<detailTrue>Yes, as pinMode(INPUT), digital only, no pull-up or pull-down.</detailTrue>
+		<detailFalse>No.</detailFalse>
+		<detailEmpty></detailEmpty>
+	</detail>
+	<detail>
+		<detailLabel>Supports digitalRead</detailLabel>
+		<detailTag>pinDigitalRead</detailTag>
+		<detailSearchable>true</detailSearchable>
+		<detailTrue>Yes. Supports INPUT, INPUT_PULLUP, and INPUT_PULLDOWN.</detailTrue>
+		<detailFalse>No.</detailFalse>
+		<detailEmpty></detailEmpty>
+	</detail>
+	<detail>
+		<detailLabel>Supports digitalWrite</detailLabel>
+		<detailTag>pinDigitalWrite</detailTag>
+		<detailSearchable>true</detailSearchable>
+		<detailTrue>Yes. Use values LOW and HIGH.</detailTrue>
+		<detailFalse>No.</detailFalse>
+		<detailEmpty></detailEmpty>
+	</detail>
+	<detail>
+		<detailLabel>Supports analogRead</detailLabel>
+		<detailTag>pinAnalogRead</detailTag>
+		<detailSearchable>true</detailSearchable>
+		<detailTrue>Yes. Values 0 - 4095 correspond to 0 to 3.3V input. Not 5V tolerant!</detailTrue>
+		<detailFalse>No.</detailFalse>
+		<detailEmpty></detailEmpty>
+	</detail>
+	<detail>
+		<detailLabel>Supports analogWrite (PWM)</detailLabel>
+		<detailTag>pinAnalogWritePWM</detailTag>
+		<detailSearchable>true</detailSearchable>
+		<detailTrue>Yes. Values 0 - 255 correspond to a duty cycle of 0 to 100 % on with a 500 Hz square wave.</detailTrue>
+		<detailFalse>No.</detailFalse>
+		<detailEmpty></detailEmpty>
+	</detail>
+	<detail>
+		<detailLabel>Supports analogWrite (DAC)</detailLabel>
+		<detailTag>pinAnalogWriteDAC</detailTag>
+		<detailSearchable>true</detailSearchable>
+		<detailTrue>Yes. Values 0 - 4095 correspond to an analog value of 0 to 3.3V.</detailTrue>
+		<detailFalse>No.</detailFalse>
+		<detailEmpty></detailEmpty>
+	</detail>
+	<detail>
+		<detailLabel>Supports tone</detailLabel>
+		<detailTag>pinTone</detailTag>
+		<detailSearchable>true</detailSearchable>
+		<detailTrue>Yes. Support PWM square wave output with the specified frequency and a 50 % duty cycle.</detailTrue>
+		<detailFalse>No.</detailFalse>
+		<detailEmpty></detailEmpty>
+	</detail>
+	<detail>
+		<detailLabel>Supports attachInterrupt</detailLabel>
+		<detailTag>pinAttachInterrupt</detailTag>
+		<detailSearchable>true</detailSearchable>
+		<detailTrue>Yes.</detailTrue>
+		<detailFalse>No.</detailFalse>
+		<detailEmpty></detailEmpty>
+	</detail>
+	<detail>
+		<detailLabel>Serial Interface</detailLabel>
+		<detailTag>pinSerial</detailTag>
+		<detailSearchable>true</detailSearchable>
+		<detailTrue>Yes.</detailTrue>
+		<detailFalse>No.</detailFalse>
+		<detailEmpty></detailEmpty>
+	</detail>
+	<detail>
+		<detailLabel>SPI Interface</detailLabel>
+		<detailTag>pinSPI</detailTag>
+		<detailSearchable>true</detailSearchable>
+		<detailTrue>Yes.</detailTrue>
+		<detailFalse>No.</detailFalse>
+		<detailEmpty></detailEmpty>
+	</detail>
+	<detail>
+		<detailLabel>I2C Interface</detailLabel>
+		<detailTag>pinI2C</detailTag>
+		<detailSearchable>true</detailSearchable>
+		<detailTrue>Yes.</detailTrue>
+		<detailFalse>No.</detailFalse>
+		<detailEmpty></detailEmpty>
+	</detail>
+	<detail>
+		<detailLabel>I2S Interface</detailLabel>
+		<detailTag>pinI2S</detailTag>
+		<detailSearchable>true</detailSearchable>
+		<detailTrue>Yes.</detailTrue>
+		<detailFalse>No.</detailFalse>
+		<detailEmpty></detailEmpty>
+	</detail>
+	<detail>
+		<detailLabel>CAN Interface</detailLabel>
+		<detailTag>pinCAN</detailTag>
+		<detailSearchable>true</detailSearchable>
+		<detailTrue>Yes.</detailTrue>
+		<detailFalse>No.</detailFalse>
+		<detailEmpty></detailEmpty>
+	</detail>
+</pinData>
+
+
