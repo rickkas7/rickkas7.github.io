@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<title>Particle Electron Battery Calculator</title>
+
+<script type="text/javascript" src="jquery.js"></script>  
+<script type="text/javascript" src="main.js"></script>  
+<script type="text/javascript" src="htmlbuilder.js"></script>  
+<link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+
+<div id="mainDiv">
+
+<p>This is a <em>wildly inaccurate</em> Particle Electron battery capacity calculator. You should 
+only use this for the wildest of guesses for battery capacity, as there are so many variables the 
+numbers generated here may not be close to accurate. Also, I may have made calculation errors. 
+Be sure to run your own tests before making design decisions!</p>
+
+<form>
+
+<h3>Options</h3>
+
+<p>Battery size:
+<select id="battery">
+<option value="1.200" >1200 mAH</option>
+<option value="1.800" >1800 mAH</option>
+<option value="2.0" selected="selected">2000 mAH</option>
+<option value="4.4" >4400 mAH</option>
+<option value="6.6" >6600 mAH</option>
+</select> 
+</p>
+
+<p>Battery reserve: <input id="reserve" type="text" name="reserve" value="400"/> mAH (400 or more recommended).</p>
+
+<p>I want to publish every <input id="publishValue" type="text" name="period" value="10"/> 
+<select id="publishUnit">
+<option value="s" >seconds</option>
+<option value="m" selected="selected">minutes</option>
+<option value="h">hours</option>
+</select> 
+<input id="publishSize" type="text" name="size" value="40"/> bytes.</p>
+
+</form>
+
+
+<h3>Results</h3>
+
+<div id="results"></div>
+
+<p>Stop + Standby is stop mode sleep (pin + time) with SLEEP_NETWORK_STANDBY to keep the cellular modem active.</p>
+
+<p>Deep sleep is SLEEP_MODE_DEEP. The cellular modem is turned off.</p>
+
+
+
+</div> <!-- main -->
+
+</body>
+</html>
