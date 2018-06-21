@@ -69,6 +69,7 @@ $(function() {
 <h2>Introduction</h2>
 <p>The <a href="https://github.com/pellepl/spiffs">excellent SPIFFS library</a> provides a simple file system on a NOR flash chip. This is a port of the library for the Particle platform, with a few convenience helpers to make using it easier from C++ and using standard Particle/Arduino/Wiring APIs.</p>
 <p>Both the original SPIFFS library and this port and MIT licensed, so you can use them in open-source or in closed-source commercial products without a fee or license.</p>
+<p>The full browsable API documentation can be found <a href="http://rickkas7.github.io/SpiffsParticleRK/">here</a>.</p>
 <h2>Flash Support</h2>
 <p>This library supports SPI-connected NOR flash chips. These are typically tiny 8-SOIC surface mount chips, intended to be included on your own circuit board. There are also breadboard adapters that are available, shown in the examples below.</p>
 <p>The chips are really inexpensive, less than US$0.50 in single quantities for a 1 Mbyte flash. They're available in sizes up to 16 Mbyte.</p>
@@ -84,11 +85,11 @@ $(function() {
 <p>It is sometimes possible to find the 8-PDIP (0.3") versions suitable for plugging directly into a breadboard. Both Macronix and Winbond make them, but they're infrequently used and often not available.</p>
 <p>It does not support I2C flash, SD cards, or non-flash chips like FRAM.</p>
 <h2>Instantiating an SpiFlash object</h2>
-<p>You typically instantiate an object to interface to the flash chip as a global variable:</p>
-<div class="fragment"><div class="line">SpiFlashISSI spiFlash(SPI, A2);</div></div><!-- fragment --><p>ISSI flash connected to the primary SPI with A2 as the CS (chip select or SS).</p>
-<div class="fragment"><div class="line">SpiFlashWinbond spiFlash(SPI, A2);</div></div><!-- fragment --><p>Winbond flash connected to the primary SPI with A2 as the CS (chip select or SS).</p>
-<div class="fragment"><div class="line">SpiFlashWinbond spiFlash(SPI1, D5);</div></div><!-- fragment --><p>Winbond flash connected to the secondary SPI, SPI1, with D5 as the CS (chip select or SS).</p>
-<div class="fragment"><div class="line">SpiFlashMacronix spiFlash(SPI1, D5);</div></div><!-- fragment --><p>Macronix flash connected to the secondary SPI, SPI1, with D5 as the CS (chip select or SS). This is the recommended for use on the E-Series module. Note that the E series requires the <a href="https://www.digikey.com/product-detail/en/macronix/MX25L8006EM1I-12G/1092-1117-ND/2744800">MX25L8006EM1I-12G</a> the 0.154", 3.90mm width 8-SOIC package.</p>
+<p>You typically instantiate an object to interface to the flash chip as a global variable: </p><hr/>
+<div class="fragment"><div class="line">SpiFlashISSI spiFlash(SPI, A2);</div></div><!-- fragment --><p>ISSI flash connected to the primary SPI with A2 as the CS (chip select or SS). </p><hr/>
+<div class="fragment"><div class="line">SpiFlashWinbond spiFlash(SPI, A2);</div></div><!-- fragment --><p>Winbond flash connected to the primary SPI with A2 as the CS (chip select or SS). </p><hr/>
+<div class="fragment"><div class="line">SpiFlashWinbond spiFlash(SPI1, D5);</div></div><!-- fragment --><p>Winbond flash connected to the secondary SPI, SPI1, with D5 as the CS (chip select or SS). </p><hr/>
+<div class="fragment"><div class="line">SpiFlashMacronix spiFlash(SPI1, D5);</div></div><!-- fragment --><p>Macronix flash connected to the secondary SPI, SPI1, with D5 as the CS (chip select or SS). This is the recommended for use on the E-Series module. Note that the E series requires the <a href="https://www.digikey.com/product-detail/en/macronix/MX25L8006EM1I-12G/1092-1117-ND/2744800">MX25L8006EM1I-12G</a> the 0.154", 3.90mm width 8-SOIC package. </p><hr/>
 <div class="fragment"><div class="line">SpiFlashP1 spiFlash;</div></div><!-- fragment --><p>The external flash on the P1 module. This extra flash chip is entirely available for your use; it is not used by the system firmware. You can only use this on the P1; it relies on system functions that are not available on other devices.</p>
 <h2>Connecting the hardware</h2>
 <p>The real intention is to reflow the 8-SOIC module directly to your custom circuit board. However, for prototyping, here are some examples:</p>
@@ -175,13 +176,14 @@ P1</div></div>
 <li>If your flash is blank, you'll need to format the file system.</li>
 <li>You can iterate the top level directory to find the file names in it.</li>
 <li>In order to use data in a file, you must open it and get a file handle, read or write, then close it.</li>
-<li>There are a finite number of files that can be open, but you can set the maximum. The default is 4.</li>
+<li>There are a finite number of files that can be open, but you can set the maximum at mount time. The default is 4.</li>
 <li>If you think the file system is corrupted, you can check and repair it.</li>
 </ul>
 <p>Once you get it working, there is some fine-tuning you can do:</p>
 <ul>
 <li>The cache size is programmable, which speeds up operations at the cost of additional RAM. The default is 2 logical blocks.</li>
 <li>The logical block size is programmable. Using larger blocks can make using large files more efficient in flash storage, at the cost of more RAM and making small files less efficient in flash storage. The default is 4K, and can't be made smaller but can be made larger.</li>
+<li>Even with the default settings, it's surprisingly fast (see the benchmarking section, below).</li>
 </ul>
 <h2>Example 1 - Simple</h2>
 <p>This example should be pretty straightforward:</p>
@@ -194,10 +196,26 @@ P1</div></div>
 <div class="fragment"><div class="line">SpiffsParticleFile f = fs.openFile(&quot;test&quot;, SPIFFS_O_RDWR|SPIFFS_O_CREAT);</div><div class="line">if (f.isValid()) {</div><div class="line">    f.println(&quot;hello world&quot;);</div><div class="line"></div><div class="line">    f.seekStart();</div><div class="line"></div><div class="line">    String s = f.readStringUntil(&#39;\n&#39;);</div><div class="line">    Log.info(&quot;got: %s&quot;, s.c_str());</div><div class="line"></div><div class="line">    f.close();</div><div class="line">}</div></div><!-- fragment --><p>This block of code opens the file, creating it if necessary.</p>
 <p>It writes the line <code>hello world</code> to the file.</p>
 <p>Then it reads the line back and prints it to the debug serial.</p>
-<h2>Other examples</h2>
+<p>Once you get your filesystem working, you may want to eliminate the info messages from Spiffs. This can be done by using the categories feature of the log handler:</p>
+<div class="fragment"><div class="line">SerialLogHandler logHandler(LOG_LEVEL_WARN, { // Logging level for non-application messages</div><div class="line">    { &quot;app&quot;, LOG_LEVEL_INFO }, // Default logging level for all application messages</div><div class="line">    { &quot;app.spiffs&quot;, LOG_LEVEL_WARN } // Disable spiffs info and trace messages</div><div class="line">});</div></div><!-- fragment --><h2>Other examples</h2>
 <p>The 2-self-test example runs a bunch of tests to verify functionality. It also shows how to use most of the functions.</p>
 <p>The 3-stop-sleep example shows how to use stop mode sleep (pin + time) to efficiently and safely manage the flash. Since stop mode sleep preserves the contents of RAM, you don't need to re-mount the file system or even the close and open the files. You can just continue where you left off.</p>
-<h2>Resource usage</h2>
+<h2>Benchmarking</h2>
+<p>The 5-benchmark example runs some tests to evaluate the speed of the file system. This log is testing a 1 Mbyte ISSI flash chip on a Photon.</p>
+<p>The format operation is slow, about 14 seconds for a 1 Mbyte flash. Fortunately you shouldn't have to format often (probably only once).</p>
+<div class="fragment"><div class="line">0000010000 [app] INFO: starting chipErase</div><div class="line">0000011853 [app] INFO: finished chipErase: 1853 ms</div><div class="line">0000011853 [app] INFO: starting format</div><div class="line">0000026245 [app] INFO: format res=0</div><div class="line">0000026245 [app] INFO: finished format: 14392 ms</div><div class="line">0000026245 [app] INFO: starting mount</div><div class="line">0000026291 [app] INFO: mount res=0</div><div class="line">0000026292 [app] INFO: finished mount: 47 ms</div></div><!-- fragment --><p>The bulk write and read test does 512 byte operations sequentially. It's able to write 256 Kbytes in 1.5 seconds. It can read it in 264 milliseconds.</p>
+<div class="fragment"><div class="line">0000026292 [app] INFO: testing 262144 bytes in 512 byte blocks </div><div class="line">0000026360 [app] INFO: starting write</div><div class="line">0000027924 [app] INFO: finished write: 1564 ms</div><div class="line">0000027924 [app] INFO: starting read</div><div class="line">0000028188 [app] INFO: finished read: 264 ms</div></div><!-- fragment --><p>The append and flush test writes 100 bytes and flushes the contents to flash so they'll be preserved if there is a power outage. It's able to do 5000 append and flush operations in 831 milliseconds.</p>
+<p>Reading the blocks back only takes 104 milliseconds.</p>
+<div class="fragment"><div class="line">0000028708 [app] INFO: testing append and flush 100 bytes 5000 times </div><div class="line">0000028776 [app] INFO: starting append</div><div class="line">0000029607 [app] INFO: finished append: 831 ms</div><div class="line">0000029607 [app] INFO: starting read</div><div class="line">0000029711 [app] INFO: finished read: 104 ms</div></div><!-- fragment --><h2>Resource usage</h2>
+<p>The code space used by the library is slightly less than 30 Kbytes. This includes both the SpiFlash and Spiffs libraries and the Wiring/Arduino <a class="el" href="class_stream.html" title="Arduino/Wiring Stream Class. ">Stream</a> compatibility.</p>
+<p>The RAM usage is dependent on various settings.</p>
+<ul>
+<li>Work buffers (2 * logical page size), default is 2 * 256 = 512</li>
+<li>File descriptor buffers (32 * max open files), default is 32 * 4 = 128</li>
+<li>Cache (logical page size + 32) * cachePages + 40 byte, default is (256 + 32) * 2 + 40 = 616</li>
+<li>Thus the total RAM allocated during mount is by default is 1256 bytes</li>
+</ul>
+<p>This memory is freed if you unmount, though in most cases you'll keep the volume mounted all of the time. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
