@@ -464,6 +464,14 @@
     "d": "customer wants Particle to sponsor their event"
   },
   {
+    "t": "redbear_replacement",
+    "d": "RedBear replacement (generates email)"
+  },
+  {
+    "t": "redbear_support",
+    "d": "RedBear support issue (generates email)"
+  },
+  {
     "t": "sb_abandonded_cart",
     "d": ""
   },
