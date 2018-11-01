@@ -36,7 +36,7 @@ function updateValues() {
 	var dataAdjustment = 1.05;
 	var energyAdjustment = 1.05;
 
-	var battery = parseInt($('#battery').val());
+	var battery = parseInt($('#battery').val()) / 1000;
 	var reserve = parseInt($('#reserve').val()) / 1000;
 	var publishValue = parseInt($('#publishValue').val());
 	var publishUnit = $('#publishUnit').val();
