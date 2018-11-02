@@ -196,6 +196,34 @@
     "d": "informational request for Argon/Boron/Xenon (Dave)"
   },
   {
+    "t": "hw_mesh_bad_keys",
+    "d": "Bad device or server keys on a mesh device"
+  },
+  {
+    "t": "hw_mesh_cellular",
+    "d": "Issues setting up cellular on a mesh Boron device"
+  },
+  {
+    "t": "hw_mesh_claiming",
+    "d": "Issues claiming a mesh device to a user"
+  },
+  {
+    "t": "hw_mesh_ethernet",
+    "d": "Issues using an Ethernet shield for mesh"
+  },
+  {
+    "t": "hw_mesh_gateway",
+    "d": "Issues setting up a gateway or adding devices to a gateway"
+  },
+  {
+    "t": "hw_mesh_hardware",
+    "d": "Hardware issue on a mesh device"
+  },
+  {
+    "t": "hw_mesh_wifi",
+    "d": "Issues setting up wi-fi on a mesh Argon devices"
+  },
+  {
     "t": "hw_misc_cable_too_long",
     "d": "Cable too long (over 6 foot) or wrapped up can kill the Photon. (Voltage regulator issues)"
   },
@@ -444,6 +472,10 @@
     "d": "Internship oppourtunity "
   },
   {
+    "t": "o_needs_tag",
+    "d": "We should make a new tags for this issue"
+  },
+  {
     "t": "o_nps/nr_feedback",
     "d": "For NPS/Nice reply feedback"
   },
@@ -454,6 +486,10 @@
   {
     "t": "o_resume_submit",
     "d": "someone wants to give us their resume"
+  },
+  {
+    "t": "o_spectra ",
+    "d": ""
   },
   {
     "t": "o_spinning_logo_ad_block",
@@ -684,12 +720,24 @@
     "d": "question about running a local server (Dave)"
   },
   {
+    "t": "sw_mesh_feature",
+    "d": "Missing feature from legacy devices or device OS feature request"
+  },
+  {
     "t": "sw_misc_other",
     "d": "anything else"
   },
   {
     "t": "sw_misc_rmv_lib",
     "d": "want to remove a library (Dave)"
+  },
+  {
+    "t": "sw_mobile_data_matrix",
+    "d": "Issues scanning or using the mesh device data matrix"
+  },
+  {
+    "t": "sw_mobile_pairing",
+    "d": "Issues pairing the mobile to a device"
   },
   {
     "t": "sw_pre_claiming_e",
@@ -702,5 +750,9 @@
   {
     "t": "sw_windows_app",
     "d": "Windows App"
+  },
+  {
+    "t": "sw_workbench",
+    "d": "Issues related to Workbench (VisualStudio Code)"
   }
 ]}
