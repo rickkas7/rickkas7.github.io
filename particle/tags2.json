@@ -501,55 +501,55 @@
   },
   {
     "t": "ops_billing_clarification",
-    "d": ""
+    "d": "Billing clarification"
   },
   {
     "t": "ops_delivery_timeline_question",
-    "d": ""
+    "d": "Delivery timeline question"
   },
   {
     "t": "ops_forecast_request",
-    "d": ""
+    "d": "Forecast request"
   },
   {
     "t": "ops_international_shipping_requests",
-    "d": ""
+    "d": "International shipping request"
   },
   {
     "t": "ops_invoice_request",
-    "d": ""
+    "d": "Invoice request"
   },
   {
     "t": "ops_issue_with_order",
-    "d": ""
+    "d": "Issue with order"
   },
   {
     "t": "ops_onboarding_meeting",
-    "d": ""
+    "d": "Onboarding meeting"
   },
   {
     "t": "ops_paperwork_request",
-    "d": ""
+    "d": "Paperwork request"
   },
   {
     "t": "ops_periodic_check_in",
-    "d": ""
+    "d": "Periodic check-in"
   },
   {
     "t": "ops_product_question",
-    "d": ""
+    "d": "Product question"
   },
   {
     "t": "ops_purchase_order",
-    "d": ""
+    "d": "Purchase order"
   },
   {
     "t": "ops_quality_issue",
-    "d": ""
+    "d": "Quality issue"
   },
   {
     "t": "ops_return",
-    "d": ""
+    "d": "Return"
   },
   {
     "t": "redbear_replacement",
