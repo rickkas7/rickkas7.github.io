@@ -500,6 +500,58 @@
     "d": "customer wants Particle to sponsor their event"
   },
   {
+    "t": "ops_billing_clarification",
+    "d": ""
+  },
+  {
+    "t": "ops_delivery_timeline_question",
+    "d": ""
+  },
+  {
+    "t": "ops_forecast_request",
+    "d": ""
+  },
+  {
+    "t": "ops_international_shipping_requests",
+    "d": ""
+  },
+  {
+    "t": "ops_invoice_request",
+    "d": ""
+  },
+  {
+    "t": "ops_issue_with_order",
+    "d": ""
+  },
+  {
+    "t": "ops_onboarding_meeting",
+    "d": ""
+  },
+  {
+    "t": "ops_paperwork_request",
+    "d": ""
+  },
+  {
+    "t": "ops_periodic_check_in",
+    "d": ""
+  },
+  {
+    "t": "ops_product_question",
+    "d": ""
+  },
+  {
+    "t": "ops_purchase_order",
+    "d": ""
+  },
+  {
+    "t": "ops_quality_issue",
+    "d": ""
+  },
+  {
+    "t": "ops_return",
+    "d": ""
+  },
+  {
     "t": "redbear_replacement",
     "d": "RedBear replacement (generates email)"
   },
@@ -513,6 +565,10 @@
   },
   {
     "t": "sb_change_credit",
+    "d": ""
+  },
+  {
+    "t": "sb_customs",
     "d": ""
   },
   {
