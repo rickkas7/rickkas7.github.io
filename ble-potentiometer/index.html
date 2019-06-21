@@ -1,0 +1,151 @@
+<html>
+<head>
+<title>BLE Potentiometer Example</title>
+</head>
+<body>
+
+<button>Start</button>
+
+<div id="noBLE" style="display:none">
+This demo requires Web BLE, which is only available on new Chrome browsers on Android Chrome, Chromeboxes, 
+some Macs and Windows PCs. It's not supported on other browsers (Firefox, Safari, Edge, Internet Explorer)
+and is not supported on Chrome for iOS.
+</div>
+
+<div id="error"></div>
+
+<p><meter id="meter" value="0" min="0" max="255" style="width:200"></meter></p>
+
+
+<script>
+document.querySelector('button').addEventListener('click', function() {
+	if (navigator.bluetooth) {
+		onButtonClick();
+	}
+	else {
+		document.getElementById('noBLE').style.removeProperty('display');
+	}
+});
+
+async function onButtonClick() {
+	try {
+		console.log('requesting bluetooth device...');
+		const device = await navigator.bluetooth.requestDevice({
+			filters: [{services: ['4677062c-ad02-4034-9abf-98581772427c']}]});
+
+		console.log('connecting to GATT server...');
+		const server = await device.gatt.connect();
+
+		console.log('getting private potentiometer service...');
+		const service = await server.getPrimaryService('4677062c-ad02-4034-9abf-98581772427c');
+
+		console.log('getting private potentiometer characteristic...');
+		const characteristic = await service.getCharacteristic('dc13b36a-3499-46b0-ac11-5ac0173c4cc5');
+
+		console.log('starting notifications...');		
+		await characteristic.startNotifications();
+
+		console.log('notifications started, adding listener');
+		characteristic.addEventListener('characteristicvaluechanged', handleNotifications);
+	} catch(error) {
+		console.log('error: ' + error);
+		document.getElementById('error').innerHTML = error;
+	}
+}
+
+function handleNotifications(event) {
+	// 
+	var value = event.target.value.getUint8(0);
+
+	// console.log('value=' + value);
+	document.getElementById('meter').value = value.toString();
+}
+</script>
+
+<div id="instructions">
+
+<p>This is the BLE Potentiometer example. It allows a Gen 3 device to communicate directly with
+your web browser if you have:</p>
+
+<ul>
+<li>An Android phone (Chrome browser) with Bluetooth support</li>
+<li>A Chromebook</li>
+<li>Some Macs, using Chrome (does not work with Firefax, Safari, etc.)</li>
+<li>Some Windows PC, using Chrome (does not work with Firefox, Edge, Internet Explorer, etc.)</li>
+<li>Not an iOS phone or iPad! (Does not work even on Chrome for iOS)</li>
+</ul>
+
+<p>Here's a video of it in action. Note the green bar at the top of the screen change levels
+as the potentiometer is turned.</p>
+
+<video width="640" height="360" controls>
+  <source src="video.mp4" type="video/mp4">
+</video>
+
+<h3>Build this circuit</h3>
+
+<p><img src="pic.jpg"></p>
+
+<p>Here's the circuit drawn in Fritzing:</p>
+
+<p><img src="fritzing.png"></p>
+
+
+<h3>Flash this firmware</h3>
+
+<p>Here's the code to flash to your Gen 3 device (Argon, Boron, or Xenon). Note that this requires 
+Device OS 1.3.0 or later to have BLE support.</p>
+
+<pre>
+#include "Particle.h"
+
+SYSTEM_MODE(MANUAL);
+
+
+const BleUuid serviceUuid("4677062c-ad02-4034-9abf-98581772427c");
+const BleUuid valueUuid("dc13b36a-3499-46b0-ac11-5ac0173c4cc5");
+
+BleCharacteristic valueCharacteristic("value", BleCharacteristicProperty::NOTIFY, valueUuid, serviceUuid);
+
+const int ADC_PIN = A0;
+const unsigned long UPDATE_PERIOD_MS = 100;
+unsigned long lastUpdate = 0;
+
+void setup() {
+    Serial.begin();
+
+    BLE.addCharacteristic(valueCharacteristic);
+
+    BleAdvertisingData data;
+    data.appendServiceUUID(serviceUuid);
+    BLE.advertise(&data);
+}
+
+void loop() {
+    if (BLE.connected()) {
+    	if (millis() - lastUpdate >= UPDATE_PERIOD_MS) {
+    		lastUpdate = millis();
+
+        	uint8_t data[1];
+
+        	// ADC value is 0-4095 (12 bits) but only put 8 unsigned bits in the data
+        	// as we don't need the resolution and it avoid dealing with byte order issues.
+        	data[0] = analogRead(ADC_PIN) >> 4;
+
+        	valueCharacteristic.setValue(data, sizeof(data));
+    	}
+    }
+}
+</pre>
+
+<p>It uses SYSTEM_MODE(MANUAL) (no cloud connection), so to remove it you'll need to flash
+code over USB or use Safe Mode (blinking magenta) to flash new firmware OTA.</p>
+
+<p>Click the <strong>Start</strong> button at the top of the page to begin. You'll be
+prompted for the device to connect to and then the meter should start updating!</p>
+
+
+</div>
+
+</body>
+</html>
