@@ -1,0 +1,154 @@
+<html>
+<head>
+<title>BLE Live Graph Example</title>
+<style>
+body
+{
+background-color:#ffffff;
+}
+
+p,h1,h2,h3,li,td,div
+{ 
+font-family: helvetica, sans-serif;
+color:#000000;
+font-size: medium; 
+}
+</style>
+</head>
+<body>
+
+
+
+<button>Start</button>
+
+<div id="noBLE" style="display:none">
+This demo requires Web BLE, which is only available on new Chrome browsers on Android Chrome, Chromeboxes, 
+some Macs and Windows PCs. It's not supported on other browsers (Firefox, Safari, Edge, Internet Explorer)
+and is not supported on Chrome for iOS.
+</div>
+
+<div id="error"></div>
+
+<div>&nbsp;</div>
+
+<div id="graphDiv">
+<canvas id="canvas" width="200" height="256"></canvas>
+</div> <!-- graphDiv -->
+
+
+<script>
+
+var dataSet = [];
+
+document.querySelector('button').addEventListener('click', function() {
+	if (navigator.bluetooth) {
+		onButtonClick();
+	}
+	else {
+		document.getElementById('noBLE').style.removeProperty('display');
+	}
+});
+
+async function onButtonClick() {
+	try {
+		console.log('requesting bluetooth device...');
+		const device = await navigator.bluetooth.requestDevice({
+			filters: [{services: ['4677062c-ad02-4034-9abf-98581772427c']}]});
+
+		console.log('connecting to GATT server...');
+		const server = await device.gatt.connect();
+
+		console.log('getting private potentiometer service...');
+		const service = await server.getPrimaryService('4677062c-ad02-4034-9abf-98581772427c');
+
+		console.log('getting private potentiometer characteristic...');
+		const characteristic = await service.getCharacteristic('dc13b36a-3499-46b0-ac11-5ac0173c4cc5');
+
+		console.log('starting notifications...');		
+		await characteristic.startNotifications();
+
+		console.log('notifications started, adding listener');
+		characteristic.addEventListener('characteristicvaluechanged', handleNotifications);
+		
+		// Hide the instructions
+		document.getElementById('instructions').style.display = 'none';
+		
+	} catch(error) {
+		console.log('error: ' + error);
+		document.getElementById('error').innerHTML = error;
+	}
+}
+
+function handleNotifications(event) {
+	// value is a number value (currently 0 - 255)
+	var value = event.target.value.getUint8(0);
+	
+	var canvas = document.getElementById("canvas");
+	var ctx = canvas.getContext("2d");
+	
+	//console.log(value);
+	
+	// Add to the data set, remove from the left if it gets wider than the canvas
+	dataSet.push(value);
+	if (dataSet.length > (canvas.width - 1)) {
+		dataSet.shift();
+	}
+
+	if (dataSet.length < 2) {
+		return;
+	}
+
+	// Erase
+	canvas.width = canvas.width;
+	// ctx.clearRect(0, 0, canvas.width, canvas.height);
+	
+	// Draw samples
+	
+	// The canvas coordinate space increases going down the page, but the graph
+	// makes more sense flipped the other way so subtract the value from the 
+	// maximum value
+	
+	ctx.moveTo(0, 255 - dataSet[0]);
+	for(var ii = 1; ii < dataSet.length; ii++) {
+		ctx.lineTo(ii, 255 - dataSet[ii]);
+	}
+	ctx.stroke();
+}
+
+
+
+</script>
+
+<div id="instructions">
+
+<p>This is the BLE Live Graph example. It allows a Gen 3 device to communicate directly with
+your web browser if you have:</p>
+
+<ul>
+<li>An Android phone (Chrome browser) with Bluetooth support</li>
+<li>A Chromebook</li>
+<li>Some Macs, using Chrome (does not work with Firefax, Safari, etc.)</li>
+<li>Some Windows PC, using Chrome (does not work with Firefox, Edge, Internet Explorer, etc.)</li>
+<li>Not an iOS phone or iPad! (Does not work even on Chrome for iOS)</li>
+</ul>
+
+<p>Here's a video of it in action. Note the graph at the top of the screen updates in real time 
+as the potentiometer is turned.</p>
+
+<video width="640" height="360" controls>
+  <source src="video.mp4" type="video/mp4">
+</video>
+
+<p>You'll need the circuit and code from the <a href="../ble-potentiometer/">ble-potentiometer</a> example,
+so go ahead and flash that code to your Gen 3 Particle device (Argon, Boron, or Xenon),
+come back, here, and Click the <strong>Start</strong> button at the top of the page to begin. </p>
+
+<p>Just View Source on this page to get the HTML and Javascript necessary to do Web BLE!</p>
+
+<p>It's based on the <a href="https://github.com/rickkas7/livegraph">livegraph demo</a>, but 
+that version uses Wi-Fi, and requires a node.js server and setting up IP addresses.</p>
+
+</div>
+
+</body>
+</html>
