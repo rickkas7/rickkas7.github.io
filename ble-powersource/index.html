@@ -1,0 +1,283 @@
+<html>
+<head>
+<title>BLE Power Source Example</title>
+<style>
+body
+{
+background-color:#ffffff;
+}
+
+p,h1,h2,h3,li,td,div
+{ 
+font-family: helvetica, sans-serif;
+color:#000000;
+font-size: medium; 
+}
+</style>
+</head>
+<body>
+
+
+
+<button>Start</button>
+
+<div id="noBLE" style="display:none">
+This demo requires Web BLE, which is only available on new Chrome browsers on Android Chrome, Chromeboxes, 
+some Macs and Windows PCs. It's not supported on other browsers (Firefox, Safari, Edge, Internet Explorer)
+and is not supported on Chrome for iOS.
+</div>
+
+<div id="error"></div>
+
+
+<p>Power Source: <span id="powerSource"></span></p>
+
+<p>Battery State: <span id="batState"></span></p>
+
+<p>Battery Level: <meter id="batLevel" value="0" min="0" max="100" style="width:200"></meter></p>
+
+
+<script>
+document.querySelector('button').addEventListener('click', function() {
+	if (navigator.bluetooth) {
+		onButtonClick();
+	}
+	else {
+		document.getElementById('noBLE').style.removeProperty('display');
+	}
+});
+
+async function onButtonClick() {
+	try {
+		console.log('requesting bluetooth device...');
+		const device = await navigator.bluetooth.requestDevice({
+			filters: [{services: ['5c1b9a0d-b5be-4a40-8f7a-66b36d0a5176']}]});
+
+		console.log('connecting to GATT server...');
+		const server = await device.gatt.connect();
+
+		console.log('getting private service...');
+		const service = await server.getPrimaryService('5c1b9a0d-b5be-4a40-8f7a-66b36d0a5176');
+
+		console.log('getting private batState characteristic...');
+		var characteristic = await service.getCharacteristic('fdcf4a3f-3fed-4ed2-84e6-04bbb9ae04d4');
+		await characteristic.startNotifications();
+		characteristic.addEventListener('characteristicvaluechanged', handleBatStateNotifications);
+		
+		console.log('getting private powerSource characteristic...');
+		characteristic = await service.getCharacteristic('cc97c20c-5822-4800-ade5-1f661d2133ee');
+		await characteristic.startNotifications();
+		characteristic.addEventListener('characteristicvaluechanged', handlePowerSourceNotifications);
+
+		console.log('getting private batLevel characteristic...');
+		characteristic = await service.getCharacteristic('d2b26bf3-9792-42fc-9e8a-41f6107df04c');
+		await characteristic.startNotifications();
+		characteristic.addEventListener('characteristicvaluechanged', handleBatLevelNotifications);
+		
+		// Hide the instructions
+		document.getElementById('instructions').style.display = 'none';
+	} catch(error) {
+		console.log('error: ' + error);
+		document.getElementById('error').innerHTML = error;
+	}
+}
+
+function handleBatLevelNotifications(event) {
+	// 
+	var value = event.target.value.getUint8(0);
+
+	// console.log('batLevel=' + value);
+	document.getElementById('batLevel').value = value.toString();
+}
+
+function handlePowerSourceNotifications(event) {
+	// 
+	var value = event.target.value.getUint8(0);
+
+	// console.log('powerSource=' + value);
+	 
+	// POWER_SOURCE_UNKNOWN = 0,
+	// POWER_SOURCE_VIN = 1,
+	// POWER_SOURCE_USB_HOST = 2,
+	// POWER_SOURCE_USB_ADAPTER = 3,
+	// POWER_SOURCE_USB_OTG = 4,
+	// POWER_SOURCE_BATTERY = 5
+
+	var text;
+	switch(value) {
+	case 1:
+		text = 'VIN';
+		break;
+	case 2:
+		text = 'USB Host';
+		break;
+	case 3:
+		text = 'USB Adapter';
+		break;
+	case 4:
+		text = 'USB OTG';
+		break;
+	case 5:
+		text = 'Battery';
+		break;
+	case 0:
+	default:
+		text = 'Unknown';
+		break;
+	}	
+	document.getElementById('powerSource').innerHTML = text;
+}
+
+function handleBatStateNotifications(event) {
+	// 
+	var value = event.target.value.getUint8(0);
+
+	// BATTERY_STATE_UNKNOWN = 0,
+	// BATTERY_STATE_NOT_CHARGING = 1,
+	// BATTERY_STATE_CHARGING = 2,
+	// BATTERY_STATE_CHARGED = 3,
+	// BATTERY_STATE_DISCHARGING = 4,
+	// BATTERY_STATE_FAULT = 5,
+	// BATTERY_STATE_DISCONNECTED = 6
+	// console.log('batState=' + value);
+	switch(value) {
+	case 1:
+		text = 'Not Charging';
+		break;
+	case 2:
+		text = 'Charging';
+		break;
+	case 3:
+		text = 'Charged';
+		break;
+	case 4:
+		text = 'Discharging';
+		break;
+	case 5:
+		text = 'Fault';
+		break;
+	case 6:
+		text = 'Disconnected';
+		break;
+	case 0:
+	default:
+		text = 'Unknown';
+		break;
+	}	
+	document.getElementById('batState').innerHTML = text;
+}
+
+
+</script>
+
+<div id="instructions">
+
+<p>This is the BLE Power Source example. It allows a Gen 3 device to communicate directly with
+your web browser if you have:</p>
+
+<ul>
+<li>An Android phone (Chrome browser) with Bluetooth support</li>
+<li>A Chromebook</li>
+<li>Some Macs, using Chrome (does not work with Firefax, Safari, etc.)</li>
+<li>Some Windows PC, using Chrome (does not work with Firefox, Edge, Internet Explorer, etc.)</li>
+<li>Not an iOS phone or iPad! (Does not work even on Chrome for iOS)</li>
+</ul>
+
+<p>Here's a video of it in action:</p>
+
+<video width="640" height="360" controls>
+  <source src="video.mp4" type="video/mp4">
+</video>
+
+
+<h3>Flash this firmware</h3>
+
+<p>Here's the code to flash to your Gen 3 device. A Boron is recommended because you won't get full 
+power diagnostics on the Argon and Xenon. Note that this requires Device OS 1.3.0 or later to have BLE support.</p>
+
+<pre>
+#include "Particle.h"
+
+// Requires the DiagnosticsHelperRK library
+#include "DiagnosticsHelperRK.h"
+
+// This example does not require the cloud so you can run it in manual mode or
+// normal cloud-connected mode
+// SYSTEM_MODE(MANUAL);
+
+SerialLogHandler logHandler(LOG_LEVEL_TRACE);
+
+const unsigned long UPDATE_INTERVAL_MS = 2000;
+unsigned long lastUpdate = 0;
+
+// Private battery and power service UUID
+const BleUuid serviceUuid("5c1b9a0d-b5be-4a40-8f7a-66b36d0a5176");
+
+BleCharacteristic batStateCharacteristic("batState", BleCharacteristicProperty::NOTIFY, BleUuid("fdcf4a3f-3fed-4ed2-84e6-04bbb9ae04d4"), serviceUuid);
+BleCharacteristic powerSourceCharacteristic("powerSource", BleCharacteristicProperty::NOTIFY, BleUuid("cc97c20c-5822-4800-ade5-1f661d2133ee"), serviceUuid);
+BleCharacteristic batLevelCharacteristic("batLevel", BleCharacteristicProperty::NOTIFY, BleUuid("d2b26bf3-9792-42fc-9e8a-41f6107df04c"), serviceUuid);
+
+
+// We don't actually have a thermometer here, we just randomly adjust this value
+float lastValue = 37.0; // 98.6 deg F;
+
+uint8_t lastBattery = 100;
+
+void setup() {
+	(void)logHandler; // Does nothing, just to eliminate the unused variable warning
+
+	BLE.addCharacteristic(batStateCharacteristic);
+	BLE.addCharacteristic(powerSourceCharacteristic);
+	BLE.addCharacteristic(batLevelCharacteristic);
+
+	BleAdvertisingData advData;
+
+	// Advertise our private service only
+	advData.appendServiceUUID(serviceUuid);
+
+	// Continuously advertise when not connected
+	BLE.advertise(&advData);
+}
+
+void loop() {
+	if (millis() - lastUpdate >= UPDATE_INTERVAL_MS) {
+		lastUpdate = millis();
+
+		if (BLE.connected()) {
+		    // POWER_SOURCE_UNKNOWN = 0,
+			// POWER_SOURCE_VIN = 1,
+			// POWER_SOURCE_USB_HOST = 2,
+			// POWER_SOURCE_USB_ADAPTER = 3,
+			// POWER_SOURCE_USB_OTG = 4,
+			// POWER_SOURCE_BATTERY = 5
+			uint8_t powerSource = (uint8_t) DiagnosticsHelper::getValue(DIAG_ID_SYSTEM_POWER_SOURCE);
+			powerSourceCharacteristic.setValue(powerSource);
+
+			// BATTERY_STATE_UNKNOWN = 0,
+			// BATTERY_STATE_NOT_CHARGING = 1,
+			// BATTERY_STATE_CHARGING = 2,
+			// BATTERY_STATE_CHARGED = 3,
+			// BATTERY_STATE_DISCHARGING = 4,
+			// BATTERY_STATE_FAULT = 5,
+			// BATTERY_STATE_DISCONNECTED = 6
+			uint8_t batState = (uint8_t) DiagnosticsHelper::getValue(DIAG_ID_SYSTEM_BATTERY_STATE);
+			batStateCharacteristic.setValue(batState);
+
+			// Diagnostics data is a fixed point number, convert to integer 0-100 %
+			uint8_t batLevel = (uint8_t) (DiagnosticsHelper::getValue(DIAG_ID_SYSTEM_BATTERY_CHARGE) >> 8);
+			batLevelCharacteristic.setValue(batLevel);
+		}
+	}
+}
+
+</pre>
+
+<p>Click the <strong>Start</strong> button at the top of the page to begin. You'll be
+prompted for the device to connect to and then the information should start updating!</p>
+
+<p>View the source for this page to see the HTML and Javascript WebBLE code that makes it work.</p>
+
+</div>
+
+</body>
+</html>
