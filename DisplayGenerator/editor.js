@@ -9,6 +9,7 @@ var margin = 4;
 var showMini = true;
 var miniMargin = 2;
 var miniSeparator = 10;
+var yellowTopSize = 16;
 var displayWhite = '#e2fdff';
 var displayYellow = '#fdf020';
 var displayBlue = '#4bd3ff';
@@ -108,6 +109,9 @@ function initializeVue() {
 			</option>
 			</select>
 			</span>
+			<span v-if="command.op === 'setTextColor'">
+			setTextColor: <input type="checkbox" v-model="command.invert"/>Inverted Color (only works for default font)
+			</span>
 			<span v-if="command.op === 'setTextSize'">
 			setTextSize: size = <input v-model="command.size" size="4">
 			</span>
@@ -165,16 +169,17 @@ function initializeVue() {
 		el: '#mainApp',
 		data: {
 			commands: [
-				{id:1, op:'setCursor', x:"0", y:"10"},
-				{id:4, op:'setTextSize', size:"1"},
+				{id:1, op:'setTextColor', invert:false},
+				{id:2, op:'setTextSize', size:"1"},
 				{id:3, op:'setFont', font:"Default"},
-				{id:2, op:'println', text:"HELLO WORLD"}
+				{id:4, op:'setCursor', x:"0", y:"10"},
+				{id:5, op:'println', text:"HELLO WORLD"}
 				],
 			fonts: fontArray,
 			commandNames: [
 				'writePixel', 'drawLine','drawRect','fillRect','drawRoundRect','fillRoundRect',
 				'drawCircle','fillCircle', 'drawTriangle','fillTriangle',
-				'setCursor', 'setTextSize', 'setTextWrap', 'setFont', 
+				'setCursor', 'setTextColor', 'setTextSize', 'setTextWrap', 'setFont', 
 				'print','println','printCentered',
 				'drawIcon'],
 			commandDefaults: {
@@ -189,6 +194,7 @@ function initializeVue() {
 				drawTriangle:{x0:"0", y0:"0", x1:"20", y1:"0", x2:"10", y2:"10", color:"1"},
 				fillTriangle:{x0:"0", y0:"0", x1:"20", y1:"0", x2:"10", y2:"10", color:"1"},
 				setCursor:{x:"0", y:"10"},
+				setTextColor:{invert:0},
 				setTextSize:{size:"1"},
 				setTextWrap:{w:"1"},
 				setFont:{font:"Default"},
@@ -197,13 +203,14 @@ function initializeVue() {
 				printCentered:{text:"HELLO"},
 				drawIcon:{x:"0", y:"0", size:"24", width:"24", height:"24", color:"1", bitmap:""}
 			},
-			nextId:5,
+			nextId:6,
 			commandToAdd:'setCursor',
 			codeText:'',
 			selectedCommandId:-1,
 			coordinates:'',
 			downloadAppend:false,
-			displayType:'normal'
+			displayType:'normal',
+			invertDisplay:false
 		},
 		methods: {
 			addCommand: function() {
@@ -425,8 +432,13 @@ function initializeVue() {
 						screeny = 64;
 					}
 					
-					document.getElementById('mainCanvas').height = (screeny * zoom) + (2 * margin);
+					document.getElementById('mainCanvas').height = mainCanvasHeight();
 					
+					processCommands();
+				}
+			},
+			invertDisplay: {
+				handler(val) {
 					processCommands();
 				}
 			}
@@ -884,7 +896,7 @@ function initializeVue() {
 
 					for(var ii = 0; ii < bitmap.length; ii++) {
 						var value = bitmap[ii];
-						if (value < 16) {
+						if (value < 0x10) {
 							hex += '0' + value.toString(16);
 						}
 						else {
@@ -927,7 +939,9 @@ function processCommands() {
 	var codeImpl = 'void updateDisplay() {\n';
 
 	var indent = '    ';
-	var gfxClass = 'gfx.';
+	var gfxClass = 'display.';
+
+	codeImpl += indent + gfxClass + 'clearDisplay();\n';
 
 	gfx.fillScreen(0);
 	for(var ii = 0; ii < mainApp.commands.length; ii++) {
@@ -1001,6 +1015,18 @@ function processCommands() {
 			}
 			break;
 			
+			
+		case 'setTextColor':
+			if (!cmd.invert) {
+				gfx.setTextColor(1);
+				codeImpl += indent + gfxClass + 'setTextColor(WHITE);\n';				
+			}
+			else {
+				gfx.setTextColor2(0, 1);
+				codeImpl += indent + gfxClass + 'setTextColor(BLACK, WHITE);\n';				
+			}
+			break;
+			
 		case 'setTextSize':
 			gfx.setTextSize(parseInt(cmd.size));
 			codeImpl += indent + gfxClass + 'setTextSize(' + cmd.size + ');\n';
@@ -1023,14 +1049,13 @@ function processCommands() {
 			
 		case 'printCentered':
 			{
-				var cursorY = gfx.getCursorY();
-				cmd.width = gfx.measureTextX(cmd.text);
-				console.log("cursorY=" + cursorY + " width=" + cmd.width);
-				var cursorX = Math.floor((screenx / 2) - (cmd.width / 2));
-				
 				gfx.setTextWrap(0);
 				codeImpl += indent + gfxClass + 'setTextWrap(0);\n';
-				
+	
+				var cursorY = gfx.getCursorY();
+				cmd.width = gfx.measureTextX(cmd.text);
+				var cursorX = Math.floor((screenx / 2) - (cmd.width / 2));
+								
 				gfx.setCursor(cursorX, cursorY);
 				codeImpl += indent + gfxClass + 'setCursor(' + cursorX + ', ' + cursorY + ');\n';
 
@@ -1068,12 +1093,41 @@ function processCommands() {
 			break;
 		}
 	}
+	codeImpl += indent + gfxClass + 'display();\n';
 
 	codeImpl += '};\n';
 
 	mainApp.codeText = codeIncl + codeDecl + '\n' + codeImpl;
 
 	render();
+}
+
+function mainCanvasX(x) {
+	return margin + x * zoom;
+}
+function mainCanvasY(y) {
+	return margin + y * zoom + ((mainApp.displayType === 'yellow' && y >= yellowTopSize) ? zoom : 0);
+}
+function mainCanvasWidth() {
+	return (2 * margin) + (screenx * zoom);
+}
+function mainCanvasHeight() {
+	return (2 * margin) + (screeny * zoom) + ((mainApp.displayType === 'yellow') ? zoom : 0);
+}
+function miniCanvasLeft() {
+	return (screenx * zoom) + (2 * margin) + miniSeparator;	
+}
+function miniCanvasX(x) {
+	return miniCanvasLeft() + miniMargin + x;
+}
+function miniCanvasY(y) {
+	return miniMargin + y + ((mainApp.displayType === 'yellow' && y >= yellowTopSize) ? 1 : 0);
+}
+function miniCanvasWidth() {
+	return (2 * miniMargin) + screenx;
+}
+function miniCanvasHeight() {
+	return (2 * miniMargin) + screeny + ((mainApp.displayType === 'yellow') ? 1 : 0);
 }
 
 function render() {
@@ -1084,16 +1138,14 @@ function render() {
 	var canvas = document.getElementById("mainCanvas");
 	var ctx = canvas.getContext("2d");
 
-	var minix = (screenx * zoom) + (2 * margin) + miniSeparator;
-
 	var yellow = (mainApp.displayType === 'yellow');
 	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	ctx.fillStyle = "#000000";
-	ctx.fillRect(0, 0, (screenx * zoom) + (2 * margin), (screeny * zoom) + (2 * margin));
+	ctx.fillRect(0, 0, mainCanvasWidth(), mainCanvasHeight());
 	if (showMini) {
-		ctx.fillRect(minix, 0, screenx + (2 * miniMargin), screeny + (2 * miniMargin));
+		ctx.fillRect(miniCanvasLeft(), 0, miniCanvasWidth(), miniCanvasHeight());
 	}
 
 	ctx.fillStyle = displayWhite;
@@ -1102,7 +1154,7 @@ function render() {
 	var byteIndex = 0;
 	for(var yy = 0; yy < screeny; yy++) {
 		if (yellow) {
-			if (yy < 16) {
+			if (yy < yellowTopSize) {
 				ctx.fillStyle = displayYellow;				
 			}
 			else {
@@ -1114,11 +1166,16 @@ function render() {
 
 			for(var ii = 0; ii < 8; ii++) {
 				var pixel = ((pixel8 & (1 << (7 - ii))) != 0) ? 1 : 0;
+				
+				if (mainApp.invertDisplay) {
+					pixel = !pixel;
+				}
+				
 				if (pixel) {
-					ctx.fillRect(margin + (xx + ii) * zoom, margin + yy * zoom, zoom, zoom);
+					ctx.fillRect(mainCanvasX(xx + ii), mainCanvasY(yy), zoom, zoom);
 
 					if (showMini) {
-						ctx.fillRect(minix + miniMargin + (xx + ii), miniMargin + yy, 1, 1);
+						ctx.fillRect(miniCanvasX(xx + ii), miniCanvasY(yy), 1, 1);
 					}
 					//console.log("set pixel xx=" + (xx + ii) + " yy=" + yy);
 				}
