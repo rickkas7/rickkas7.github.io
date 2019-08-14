@@ -87,9 +87,14 @@ $(function() {
 <li>It has a programmable constant current driver so you don't need current limiting resistors</li>
 <li>It's a programmable smart controller so many LED patterns can be made without intervention from the MCU</li>
 </ul>
-<p>What's the downside? It does add a chip ($1.14 in single quantities). The biggest challenge is that it's only available in a DSBGA12. This is a really, really tiny 3x4 BGA (ball grid array) chip. 1.648 mm x 1.248 mm. It's barely larger than an 0805 resistor, but with 12 pins. It can only be reflowed; it's obviously not possible to solder with a soldering iron.</p>
+<p>What's the downside? It does add a chip ($1.14 in single quantities). The biggest challenge is that it's only available in a DSBGA12 package. This is a really, really tiny 3x4 BGA (ball grid array) chip. 1.648 mm x 1.248 mm. It's barely larger than an 0805 resistor, but with 12 pins. It can only be reflowed; it's obviously not possible to solder with a soldering iron.</p>
 <p>On the plus side, you can put one of these on your board and it takes up less space than 3x 0603 current limiting resistors.</p>
-<p>While it's designed to drive an RGB LED plus one extra LED (white), it actually can drive any four independent LEDs, though the library is mainly focused on the RGB use case.</p>
+<p>While it's designed to drive an RGB LED plus one extra LED (white), it actually can drive any four independent LEDs. There are a couple benefits of using "indicator mode":</p>
+<ul>
+<li>You can drive 4x LEDs up to 25.5 mA</li>
+<li>Only uses I2C, no GPIO</li>
+<li>Full programmable to be on/dim/off, plus programmable patterns like blink or breathe</li>
+</ul>
 <h3>The library</h3>
 <p>Using the LP5562-RK library is just a matter of adding the library to your project and initializing it:</p>
 <div class="fragment"><div class="line">#include &quot;LP5562-RK.h&quot;</div><div class="line"></div><div class="line">LP5562 ledDriver;</div><div class="line"></div><div class="line">void setup() {</div><div class="line">    ledDriver.withLEDCurrent(5.0).begin();</div><div class="line"></div><div class="line">    ledDriver.setBreathe(false, true, true, 20, 0, 255);</div><div class="line">}</div><div class="line"></div><div class="line">void loop() {</div><div class="line">}</div></div><!-- fragment --><p>You normally allocate the object as a global object:</p>
@@ -134,7 +139,7 @@ Address 2</div></div>
 <img src="Addr3.png" alt="Addr3.png"/>
 <div class="caption">
 Address 3</div></div>
-<h3>Demo Board</h3>
+<h3>RGB Demo Board</h3>
 <p>I made a simple demo board to test and illustrate the use of the chip.</p>
 <div class="image">
 <img src="board-image.jpg" alt="board-image.jpg"/>
@@ -182,6 +187,38 @@ Board Close</div></div>
     &lt;td class="markdownTableBodyNone"&gt; [Sullins PRPC040SAAN-RC](https://www.digikey.com/product-detail/en/PRPC040SAAN-RC/S1011EC-40-ND/2775214) &lt;/td&gt;
     &lt;td class="markdownTableBodyRight"&gt;   </td></tr>
 </table>
+<h3>Indicator Demo Board</h3>
+<p>This demo board tests 4 discrete LEDs instead of using an RGB LED. I made it using T-1 (3mm) through hole LEDs because I had a kit of them so I could use 3 20mA LEDs and 1 10mA LEDs.</p>
+<div class="image">
+<img src="board2-image.jpg" alt="board2-image.jpg"/>
+<div class="caption">
+Indicator Board</div></div>
+<p> Schematic:</p>
+<div class="image">
+<img src="board2-schematic.png" alt="board2-schematic.png"/>
+<div class="caption">
+Indicator Schematic</div></div>
+<p> Board:</p>
+<div class="image">
+<img src="board2.png" alt="board2.png"/>
+<div class="caption">
+Indicator Board</div></div>
+<p> The main difference between indicator mode and RGB mode is how the engines are set up. Because there are four LEDs and 3 engines, indicator mode sets up the three engines with common patterns:</p>
+<ul>
+<li>Blink</li>
+<li>Fast blink</li>
+<li>Breathe</li>
+</ul>
+<p>Then you can assign any LED to be on, dim, off, or one of the three available patterns. This provides a lot of flexibility given the hardware limitations of the <a class="el" href="class_l_p5562.html" title="Class for the LP5562 LED driver. ">LP5562</a>. Of course the full <a class="el" href="class_l_p5562.html" title="Class for the LP5562 LED driver. ">LP5562</a> programming API is available as well if you want to go crazy with the customization.</p>
+<p>If you are using LEDs with different current requirements you can use the <code>withLEDCurrent()</code> overload with separate settings for red, green, blue, and white.</p>
+<div class="fragment"><div class="line">ledDriver.withLEDCurrent(20.0, 20.0, 20.0, 10.0).begin();</div></div><!-- fragment --><p>To use indicator mode, use <code>setIndicatorMode()</code>.</p>
+<div class="fragment"><div class="line">ledDriver.setIndicatorMode();</div></div><!-- fragment --><p>To set an LED, use one of the setLedMapping methods:</p>
+<div class="fragment"><div class="line">ledDriver.setLedMappingR(LP5562::REG_LED_MAP_DIRECT, 0);</div><div class="line">ledDriver.setLedMappingG(LP5562::REG_LED_MAP_ENGINE_1);</div><div class="line">ledDriver.setLedMappingB(LP5562::REG_LED_MAP_ENGINE_2);</div><div class="line">ledDriver.setLedMappingW(LP5562::REG_LED_MAP_ENGINE_3);</div></div><!-- fragment --><ul>
+<li><code><a class="el" href="class_l_p5562.html#aaf0a7ca699d74306ed4622081354b288" title="Sets the LED to direct PWM setting mode. ">LP5562::REG_LED_MAP_DIRECT</a></code> sets a direct PWM value. 0 is off, 255 is full brightness, and values in between are dimmed.</li>
+<li><code><a class="el" href="class_l_p5562.html#a6ce5bc35ce703b3af20be6df5a3e5e67" title="Sets the LED to be controlled by engine 1. ">LP5562::REG_LED_MAP_ENGINE_1</a></code> is a normal blink.</li>
+<li><code><a class="el" href="class_l_p5562.html#a5a47a4abcce94fad6953ee063bd080c5" title="Sets the LED to be controlled by engine 2. ">LP5562::REG_LED_MAP_ENGINE_2</a></code> is a fast blink.</li>
+<li><code><a class="el" href="class_l_p5562.html#ad3aa43433c650996622f8fd11c4071d3" title="Sets the LED to be controlled by engine 3. ">LP5562::REG_LED_MAP_ENGINE_3</a></code> is breathing. </li>
+</ul>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
