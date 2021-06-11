@@ -8,6 +8,8 @@ void runTest();
 void setup() {
     // Wait for a USB serial connection for up to 30 seconds
     waitFor(Serial.isConnected, 30000);
+    delay(2000);
+
     runTest();
 }
 
